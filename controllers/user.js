@@ -4,10 +4,10 @@ function getUserInfo(userId, cb) {
   if (userId) {
     pool.execute(`SELECT 
                     users.disable as isDisabled,
-                    users.id as Login,
-                    users_pi.fio as FIO,
-                    users_pi.phone as Phone,
-                    bills.deposit as Deposit,
+                    users.id as login,
+                    users_pi.fio as fio,
+                    users_pi.phone as phone,
+                    bills.deposit as deposit,
                     users_pi.city,
                     users_pi.address_street,
                     users_pi.address_build,
