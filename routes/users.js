@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const getUserInfo = require('../controllers/user.js')
+const { getUser } = require('../controllers/user.js')
 
 router.get('/', (req, res) => {
   res.json({
@@ -15,9 +15,16 @@ router.post('/', (req, res) => {
 });
 router.get('/:userId', (req, res) => {
   const id = req.params.userId;
-  getUserInfo(id, (err, results, fields) => {
-    res.json(results)
-  }); 
+  
+  function handleResolve(response) {
+    res.json(response);
+  };
+  
+  function handleReject(err) {
+    res.json(err);
+  };
+
+  getUser(id).then(handleResolve, handleReject);
 })
 
 module.exports = router;

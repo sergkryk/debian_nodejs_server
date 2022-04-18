@@ -8,5 +8,6 @@ const abills = {
 }
 
 const pool = mysql.createPool(abills);
+const promisePool = pool.promise();
 
-module.exports = pool;
+module.exports = promisePool;
