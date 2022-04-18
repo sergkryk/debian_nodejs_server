@@ -7,7 +7,6 @@ function getValidDays(deposit, dayFee, reduction) {
 
   const currentDate = new Date();
   const expDate = currentDate.setDate(currentDate.getDate() + validPeriod);
-  console.log(new Date(expDate));
   return expDate;
 };
 
@@ -20,7 +19,6 @@ function getValidMonthes(deposit, monthFee, reduction) {
 
   const currentDate = new Date();
   const expDate = currentDate.setMonth(currentDate.getMonth() + validPeriod, 0);
-  console.log(new Date(expDate));
   return expDate;
 };
 
