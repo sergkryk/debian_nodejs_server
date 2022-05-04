@@ -7,6 +7,7 @@ const interface = 'localhost';
 const usersRouter = require('./routes/info');
 const paymentsRouter = require('./routes/payments');
 const feesRouter = require('./routes/fees');
+const recentFinances = require('./routes/recentFinances');
 
 const app = express();
 app.use(cors());
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use('/users', usersRouter);
 app.use('/payments', paymentsRouter);
 app.use('/fees', feesRouter);
+app.use('/finances', recentFinances);
 
 app.use((req, res) => {
   const error = new Error('Not found');

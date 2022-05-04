@@ -1,12 +1,12 @@
-const { getLastById, getAllById } = require('../models/fees')
+const { fetchLastUserFees, fetchAllUserFees } = require('../models/fees')
 
 const userFeesController = async (req, res) => {
   if (req.query.view === 'last') {
-    const data = await getLastById(req.params.userId);
+    const data = await fetchLastUserFees(req.params.userId);
     res.send(data);
     return;
   }
-  const data = await getAllById(req.params.userId);
+  const data = await fetchAllUserFees(req.params.userId);
   res.send(data);
 }
 
