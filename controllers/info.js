@@ -1,8 +1,9 @@
-const { getInfo } = require('../models/info');
+const { User } = require('../models/info');
  
 const userInfoController = async (req, res) => {
-  const data = await getInfo(req.params.userId);
-  res.send(data);
+  const user = new User(req.params.userId)
+  const all = await user.getAll();
+  res.send(all);
 };
 
 module.exports = { userInfoController };
