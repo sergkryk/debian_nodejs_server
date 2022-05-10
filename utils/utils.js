@@ -1,12 +1,11 @@
 const pool = require('./db');
 
-async function dbQuery(field, query) {
+async function dbQuery(query, cb) {
   const [[ res ]] = await pool.execute(query);
-  if (typeof(res) === 'object' && res.hasOwnProperty(field)) {
-    return res[field]
-  } else {
-    return ''
+  if (cb) {
+    return cb(res);
   }
+  return res;
 }
 
 module.exports = { dbQuery }

@@ -4,9 +4,9 @@ const cors = require('cors');
 const port = 9000;
 const interface = 'localhost';
 
-const usersRouter = require('./routes/info');
-const paymentsRouter = require('./routes/payments');
-const feesRouter = require('./routes/fees');
+const userRouter = require('./routes/user');
+const billingRouter = require('./routes/billing');
+const tariffRouter = require('./routes/tariff');
 
 const app = express();
 app.use(cors());
@@ -14,9 +14,9 @@ app.use(cors());
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
-app.use('/users', usersRouter);
-app.use('/payments', paymentsRouter);
-app.use('/fees', feesRouter);
+app.use('/user', userRouter);
+app.use('/billing', billingRouter);
+app.use('/tariff', tariffRouter);
 
 app.use((req, res) => {
   const error = new Error('Not found');
