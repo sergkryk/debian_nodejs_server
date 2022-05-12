@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const feesController = require('../controllers/fees')
+const { allFeesController, userFeesController } = require('../controllers/fees')
 
-router.get('/', feesController.allFeesController);
-router.get('/:userId', feesController.userFeesController);
+router.get('/', allFeesController);
+router.get('/:userId', userFeesController);
 
 module.exports = router;

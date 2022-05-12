@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const paysController = require('../controllers/pays')
+const { allPaysController, userPaysController } = require('../controllers/pays')
 
-router.get('/', paysController.allPaysController);
-router.get('/:userId', paysController.userPaysController);
+router.get('/', allPaysController);
+router.get('/:userId', userPaysController);
 
 module.exports = router;
