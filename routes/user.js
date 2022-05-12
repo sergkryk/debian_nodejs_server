@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const userController = require('../controllers/user.js');
-const personalController = require('../controllers/personal.js');
+const { userDetailsController } = require('../controllers/user.js');
+const { userAddressController } = require('../controllers/address');
 
-router.get('/:userId', userController)
-router.get('/:userId/pi', personalController)
+router.get('/address/:userId', userAddressController)
+router.get('/:userId', userDetailsController)
 
 module.exports = router;

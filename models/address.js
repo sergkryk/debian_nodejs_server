@@ -1,5 +1,4 @@
 const pool = require('../utils/db');
-const { personal: personalQuery } = require('../database/userQueries');
 const { streets } = require("../config/streets");
 
 const generateUserAddress = (street, build, flat) => {
@@ -49,16 +48,10 @@ const renderPersonalInfo = (personal) => {
     ]
 }
 
-class Personal {
-  constructor(id) {
-    this.id = id;
-  }
-
-  async fetchUserPersonal() {
-    const [[ tpDetails ]] = await pool.execute(personalQuery, [this.id]);
-    const result = renderPersonalInfo(tpDetails);
-    return result;
-  }
+const getUserAddress = async function(userId) {
+  const [[ address ]] = await pool.execute(`SELECT fio, phone, email, city, address_street as street, address_build as build, address_flat as flat FROM users_pi WHERE uid = ${userId}`);
+  const result = renderPersonalInfo(address);
+  return result;
 }
 
-module.exports = Personal;
+module.exports = { getUserAddress };

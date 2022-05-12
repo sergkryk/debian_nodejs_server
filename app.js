@@ -5,7 +5,8 @@ const port = 9000;
 const interface = 'localhost';
 
 const userRouter = require('./routes/user');
-const billingRouter = require('./routes/billing');
+const feesRouter = require('./routes/fees');
+const paysRouter = require('./routes/pays');
 const tariffRouter = require('./routes/tariff');
 
 const app = express();
@@ -15,8 +16,9 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
 app.use('/user', userRouter);
-app.use('/billing', billingRouter);
 app.use('/tariff', tariffRouter);
+app.use('/fees', feesRouter);
+app.use('/pays', paysRouter);
 
 app.use((req, res) => {
   const error = new Error('Not found');

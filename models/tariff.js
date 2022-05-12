@@ -1,29 +1,29 @@
 const pool = require('../utils/db');
-const { tariff: tariffQuery } = require('../database/userQueries');
 
-const renderTariffDetails = (res) => {
-  const { tp_id, name, dayFee, monthFee } = res;
-  if (!tp_id) {
-    return 'The tariff not found'
-  }
-  return {
-    id: tp_id,
-    name,
-    fee: dayFee ? dayFee : monthFee,
-    isDayly: this.fee === dayFee,
-  }
+// const renderTariffDetails = (res) => {
+//   const { tp_id, name, dayFee, monthFee } = res;
+//   if (!tp_id) {
+//     return 'The tariff not found'
+//   }
+//   return {
+//     id: tp_id,
+//     name,
+//     fee: dayFee ? dayFee : monthFee,
+//     isDayly: this.fee === dayFee,
+//   }
+// }
+
+const fetchAll = async function () {
+  const [ tariffs ] = await pool.execute(`SELECT * FROM tarif_plans`);
+  return tariffs;
 }
 
-class Tariff {
-  constructor(id) {
-    this.id = id;
-  }
-
-  async fetchTariff() {
-    const [[ tpDetails ]] = await pool.execute(tariffQuery, [this.id]);
-    const response = renderTariffDetails(tpDetails);
-    return response;
-  }
+const fetchUserTariff = async function (userId) {
+  const [ tariff ] = await pool.execute(`SELECT d.tp_id, t.* FROM dv_main d INNER JOIN tarif_plans t ON d.tp_id = t.id WHERE d.uid = ${userId}`);
+  return tariff;
 }
 
-module.exports = Tariff;
+module.exports = {
+  fetchAll,
+  fetchUserTariff,
+};

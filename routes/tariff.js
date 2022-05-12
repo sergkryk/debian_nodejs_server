@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const tariffController = require('../controllers/tariff.js')
+const { allTariffController, userTariffController } = require('../controllers/tariff')
 
-router.get('/:userId', tariffController)
+router.get('/', allTariffController)
+router.get('/:userId', userTariffController)
 
 module.exports = router;
