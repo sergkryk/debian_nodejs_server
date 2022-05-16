@@ -17,4 +17,11 @@ const userFeesController = async (req, res) => {
   res.send(data);
 }
 
-module.exports = { allFeesController, userFeesController };
+const nextFeeController = async (req, res) => {
+  const userId = req.params.userId;
+  
+  const data = await feesModel.fetchNextFee(userId);
+  res.send(data);
+}
+
+module.exports = { allFeesController, userFeesController, nextFeeController };

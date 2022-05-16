@@ -7,7 +7,8 @@ const allTariffController = async (req, res) => {
 
 const userTariffController = async (req, res) => {
   try {
-    const data = await tariffModel.fetchUserTariff(req.params.userId)
+    const keys = req.query.keys ? req.query.keys : undefined;
+    const data = await tariffModel.fetchUserTariff(keys, req.params.tariffId)
     res.send(data);
   }
   catch {

@@ -1,7 +1,7 @@
-const { fetchUserDetails } = require('../models/user');
+const { fetchUser } = require('../models/user');
  
 const userDetailsController = async (req, res) => {
-  const result = await fetchUserDetails(req.params.userId)
+  const result = await fetchUser(req.params.userId)
   res.send(result);
 };
 
