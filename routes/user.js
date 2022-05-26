@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
-
+const tokenVerification = require('../middleware/tokenVerification');
 const { userDetailsController } = require('../controllers/user.js');
-const { userAddressController } = require('../controllers/address');
 
-router.get('/address/:userId', userAddressController);
-router.get('/:userId', userDetailsController);
+router.get('/', tokenVerification, userDetailsController);
 
 module.exports = router;
