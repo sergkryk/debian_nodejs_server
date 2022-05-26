@@ -1,6 +1,54 @@
-const loginController = (req, res) => {
-  console.log(req.body);
-  res.status(200).send({"message": "hello"})
+const pool = require("../utils/db");
+const jwt = require("jsonwebtoken");
+const { secret } = require("../config/secret");
+
+const checkResponse = (response) => {
+  if (response.length <= 0) {
+    throw new Error("User not found");
+  }
+  return response;
+};
+
+const checkResponseObjKeys = (response) => {
+  if (!response[0].hasOwnProperty('uid') || !response[0].hasOwnProperty('deleted') || !response[0].hasOwnProperty('password')) {
+    throw new Error("The response doesn't have needed keys");
+  }
+  return response;
+};
+
+const checkUserExists = (response) => {
+  if (response[0].deleted === 1) {
+    throw new Error("User is deleted");
+  }
+  return response;
+};
+
+const checkPassword = (response, password) => {
+  if (response[0].password !== password) {
+    throw new Error("Login or password is invalid");
+  }
+  return response;
+};
+
+const loginController = async (req, res) => {
+  const { login, password } = req.body;
+  if (!login || !password) {
+    res.status(404).send({ message: "Provide login or password" });
+    return;
+  }
+  try {
+    const [ dbResponse ] = await pool.execute(`SELECT uid, deleted, password, CONVERT(DECODE(password, 'abills345678901234490137') USING utf8) as password FROM users WHERE id = '${ login }'`);
+    checkResponse(dbResponse);
+    checkResponseObjKeys(dbResponse);
+    checkUserExists(dbResponse);
+    checkPassword(dbResponse, password);
+    const payload = { id: dbResponse[0].uid };
+    const token = jwt.sign(payload, secret, {expiresIn: '1h'});
+    res.status(200).json(token);
+  } catch (error) {
+    console.log(error);
+    res.status(401).send({ message: error.message });
+  }
 };
 
 module.exports = { loginController };
