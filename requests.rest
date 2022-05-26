@@ -1,0 +1,11 @@
+GET http://localhost:9000/
+
+###
+
+POST http://localhost:9000/login
+Content-Type: application/json
+
+{
+  "name": "admin_kryk",
+  "password": "09051945"
+}
