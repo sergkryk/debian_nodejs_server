@@ -1,1 +1,0 @@
-SELECT * FROM fees ORDER BY date DESC LIMIT 10;

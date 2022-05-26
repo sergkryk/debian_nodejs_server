@@ -1,8 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 
-const port = 9000;
-const interface = 'localhost';
+const PORT = 9000;
+const INTERFACE = 'localhost';
 
 const userRouter = require('./routes/user');
 const feesRouter = require('./routes/fees');
@@ -28,6 +28,6 @@ app.use((req, res) => {
   })
 })
 
-app.listen(port, interface, () => {
-  console.log(`The server started on ${interface} port ${port}`);
+app.listen(PORT, INTERFACE, () => {
+  console.log(`The server started on ${INTERFACE} port ${PORT}`);
 });
