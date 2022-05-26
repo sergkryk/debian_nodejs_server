@@ -43,7 +43,10 @@ const loginController = async (req, res) => {
     checkUserExists(dbResponse);
     checkPassword(dbResponse, password);
     const payload = { id: dbResponse[0].uid };
-    const token = jwt.sign(payload, secret, {expiresIn: '1h'});
+    const token = jwt.sign(payload, secret, {
+      expiresIn: '1h',
+      algorithm: 'HS256',
+    });
     res.status(200).json(token);
   } catch (error) {
     console.log(error);
