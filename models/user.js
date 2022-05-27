@@ -51,4 +51,9 @@ const fetchUser = async function (userId) {
   }
 };
 
-module.exports = { fetchUser };
+const fetchCid = async function (userId) {
+  const [response] = await pool.execute(`SELECT cid FROM dv_main WHERE uid = ${userId}`);
+  return response;
+}
+
+module.exports = { fetchUser, fetchCid };

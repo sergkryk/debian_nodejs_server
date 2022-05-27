@@ -44,7 +44,7 @@ const loginController = async (req, res) => {
     checkPassword(dbResponse, password);
     const payload = { id: dbResponse[0].uid };
     const token = jwt.sign(payload, secret, {
-      expiresIn: '1h',
+      expiresIn: '12h',
       algorithm: 'HS256',
     });
     res.status(200).json(token);

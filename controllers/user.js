@@ -1,8 +1,17 @@
-const { fetchUser } = require('../models/user');
+const { fetchUser, fetchCid } = require('../models/user');
  
 const userDetailsController = async (req, res) => {
-  const result = await fetchUser(req.params.uid)
+  const result = await fetchUser(req.auth.uid)
   res.send(result);
 };
 
-module.exports = { userDetailsController };
+const userCidController = async (req, res) => {
+  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  console.log(ip);
+  const result = await fetchCid(req.auth.uid)
+  res.send(result);
+};
+
+
+
+module.exports = { userDetailsController, userCidController };

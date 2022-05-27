@@ -7,7 +7,7 @@ const authenticateToken = function(req, res, next) {
     const bearer = authHeader.split(' ');
     const token = bearer[1];
     const decoded = jwt.verify(token, secret, { algorithms: ['HS256'] });
-    req.params.uid = decoded.id;
+    req.auth = { uid: decoded.id };
     next();
   } 
   catch (error) {
