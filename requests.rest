@@ -1,5 +1,12 @@
-GET http://localhost:9000/user/cid
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzUsImlhdCI6MTY1MzY0OTI5NywiZXhwIjoxNjUzNjkyNDk3fQ.zkH7ImYhFWf65ipierMjVe4atf1Jr8-2xpAkFkQszEQ
+GET http://localhost:9000/user
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk5LCJpYXQiOjE2NTM5MDU0MzQsImV4cCI6MTY1Mzk0ODYzNH0.76iR61ApmxlC5Q08_KKLp-5QdyGL1OJo0ICsDf9bqR0
+
+###
+GET http://localhost:9000/admin/cids
+
+###
+PUT http://localhost:9000/user/cid
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTU0OSwiaWF0IjoxNjUzNzIzNjI0LCJleHAiOjE2NTM3NjY4MjR9.egnocWXjhUrnzPP_fz1KSC21Ox4Lo3l93Q5Wy_zdAO4
 
 ###
 

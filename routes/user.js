@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const tokenVerification = require('../middleware/tokenVerification');
-const { userDetailsController, userCidController } = require('../controllers/user.js');
+const { userDetailsController, userCidController, userResetCidController } = require('../controllers/user.js');
+
+const CidController = require('../controllers/cid');
 
 router.use(tokenVerification)
 
@@ -12,9 +14,7 @@ router.route('/')
   .delete()
 
 router.route('/cid')
-  .get(userCidController)
-  .post()
-  .put()
-  .delete()
+  .get(CidController.getById)
+  .put(CidController.reset)
 
 module.exports = router;

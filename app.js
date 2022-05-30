@@ -4,6 +4,7 @@ const cors = require('cors');
 const PORT = 9000;
 const INTERFACE = 'localhost';
 
+const adminRouter = require('./routes/admin');
 const userRouter = require('./routes/user');
 const feesRouter = require('./routes/fees');
 const paysRouter = require('./routes/pays');
@@ -16,6 +17,7 @@ app.use(cors());
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
+app.use('/admin', adminRouter);
 app.use('/user', userRouter);
 app.use('/tariff', tariffRouter);
 app.use('/fees', feesRouter);
