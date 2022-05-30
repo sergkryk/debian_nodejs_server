@@ -51,14 +51,4 @@ const fetchUser = async function (userId) {
   }
 };
 
-const fetchCid = async function (userId) {
-  const [response] = await pool.execute(`SELECT cid FROM dv_main WHERE uid = ${userId}`);
-  return response;
-}
-
-const resetCid = async function(userId) {
-  const [ request ] = await pool.execute(`UPDATE dv_main SET cid='' WHERE uid = ${userId}`);
-  return request;
-}
-
-module.exports = { fetchUser, fetchCid, resetCid };
+module.exports = { fetchUser };

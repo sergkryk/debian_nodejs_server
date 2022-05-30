@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const tokenVerification = require('../middleware/tokenVerification');
-const { userDetailsController, userCidController, userResetCidController } = require('../controllers/user.js');
+const { userDetailsController } = require('../controllers/user.js');
 
 const CidController = require('../controllers/cid');
 
