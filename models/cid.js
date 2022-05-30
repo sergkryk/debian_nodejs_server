@@ -10,7 +10,8 @@ module.exports = class {
     return response;
   }
   static async reset(id) {
-    const [ request ] = await pool.execute(`UPDATE dv_main SET cid='' WHERE uid = ${id}`);
-    return request;
+    const currentValue = await this.fetchById(id);
+    await pool.execute(`UPDATE dv_main SET cid='' WHERE uid = ${id}`);
+    await pool.execute(`INSERT INTO admin_actions(actions, datetime, uid, aid, module, action_type) VALUES('CID ${currentValue[0].cid} was cleaned', now(), ${id}, 3, 'Dv', 2);`);
   }
 }
