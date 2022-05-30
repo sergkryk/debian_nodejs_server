@@ -1,4 +1,4 @@
-GET http://localhost:9000/user
+GET http://localhost:9000/user/cid
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk5LCJpYXQiOjE2NTM5MDU0MzQsImV4cCI6MTY1Mzk0ODYzNH0.76iR61ApmxlC5Q08_KKLp-5QdyGL1OJo0ICsDf9bqR0
 
 ###

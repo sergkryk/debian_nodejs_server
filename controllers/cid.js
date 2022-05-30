@@ -26,8 +26,9 @@ module.exports = class {
   }
   static async reset(req, res) {
     try {
+      const ip = req.ip;
       const id = req.auth.uid;
-      await Model.reset(id);
+      await Model.reset(id, ip);
       res.status(200).json();
     } catch (error) {
       console.log(error);

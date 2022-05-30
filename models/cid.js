@@ -9,9 +9,9 @@ module.exports = class {
     const [response] = await pool.execute(`SELECT cid FROM dv_main WHERE uid = ${id}`);
     return response;
   }
-  static async reset(id) {
+  static async reset(id, userIp) {
     const currentValue = await this.fetchById(id);
     await pool.execute(`UPDATE dv_main SET cid='' WHERE uid = ${id}`);
-    await pool.execute(`INSERT INTO admin_actions(actions, datetime, uid, aid, module, action_type) VALUES('CID ${currentValue[0].cid} was cleaned', now(), ${id}, 3, 'Dv', 2);`);
+    await pool.execute(`INSERT INTO admin_actions(actions, datetime, ip, uid, aid, module, action_type) VALUES('CID ${currentValue[0].cid} was cleaned', now(), INET_ATON('${userIp}'), ${id}, 3, 'Dv', 2);`);
   }
 }
