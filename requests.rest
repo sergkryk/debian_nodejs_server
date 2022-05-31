@@ -1,13 +1,19 @@
-GET http://localhost:9000/user/cid
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk5LCJpYXQiOjE2NTM5MDU0MzQsImV4cCI6MTY1Mzk0ODYzNH0.76iR61ApmxlC5Q08_KKLp-5QdyGL1OJo0ICsDf9bqR0
+GET http://localhost:9000/user/password
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODE5LCJpYXQiOjE2NTM5NzA3MTgsImV4cCI6MTY1NDAxMzkxOH0.GLzUS9aGlJKNyPOmPzUGDgepfVfjycX_bSptDW1-HUM
 
 ###
 GET http://localhost:9000/admin/cids
 
 ###
-PUT http://localhost:9000/user/cid
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTU0OSwiaWF0IjoxNjUzNzIzNjI0LCJleHAiOjE2NTM3NjY4MjR9.egnocWXjhUrnzPP_fz1KSC21Ox4Lo3l93Q5Wy_zdAO4
+POST http://localhost:9000/user/password
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODE5LCJpYXQiOjE2NTM5NzA3MTgsImV4cCI6MTY1NDAxMzkxOH0.GLzUS9aGlJKNyPOmPzUGDgepfVfjycX_bSptDW1-HUM
+Content-Type: application/json
 
+{
+  "previous": "555555",
+  "candidate": "555555",
+  "confirmed": "555555"
+}
 ###
 
 POST http://localhost:9000/login
