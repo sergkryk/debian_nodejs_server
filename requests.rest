@@ -1,12 +1,12 @@
 GET http://localhost:9000/user/password
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODE5LCJpYXQiOjE2NTM5NzA3MTgsImV4cCI6MTY1NDAxMzkxOH0.GLzUS9aGlJKNyPOmPzUGDgepfVfjycX_bSptDW1-HUM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODE5LCJpYXQiOjE2NTQwNTUzNjEsImV4cCI6MTY1NDA5ODU2MX0.n-Rc25xRNK-qeSg3HWl7BSm2kG09gpkmtJ2ASwnTqMU
 
 ###
 GET http://localhost:9000/admin/cids
 
 ###
 POST http://localhost:9000/user/password
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODE5LCJpYXQiOjE2NTM5NzA3MTgsImV4cCI6MTY1NDAxMzkxOH0.GLzUS9aGlJKNyPOmPzUGDgepfVfjycX_bSptDW1-HUM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODE5LCJpYXQiOjE2NTQwNTUzNjEsImV4cCI6MTY1NDA5ODU2MX0.n-Rc25xRNK-qeSg3HWl7BSm2kG09gpkmtJ2ASwnTqMU
 Content-Type: application/json
 
 {

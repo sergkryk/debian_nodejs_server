@@ -1,4 +1,5 @@
 const Model = require('../models/password');
+const Actions = require('../models/actions');
 
 async function checkPrevious(id, previous) {
   const [ current ] = await Model.fetchById(id, previous);
@@ -17,6 +18,17 @@ function checkCandidate(candidate) {
 function checkConfirmed(candidate, confirmed) {
   if (candidate !== confirmed) {
     throw new Error("The passwords are different");
+  }
+}
+
+async function checkPasswordDate(id) {
+  const PASS_CHANGE_INTERVAL = 10;
+  const [ dbDate ] = await Actions.fetchPasswordChangeDate(id);
+  const lastChange = new Date(dbDate.datetime);
+  const now = new Date();
+  const diff = now - lastChange;
+  if (diff < PASS_CHANGE_INTERVAL) {
+    throw new Error('You cannot change password so often');
   }
 }
 
@@ -40,6 +52,7 @@ module.exports = class {
       await checkPrevious(id, previous);
       checkCandidate(candidate);
       checkConfirmed(candidate, confirmed);
+      await checkPasswordDate(id);
       await Model.update(id, ip, candidate);
       res.status(200).json({message: 'Success'});
     } catch (error) {
