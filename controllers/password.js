@@ -4,20 +4,20 @@ const Actions = require('../models/actions');
 async function checkPrevious(id, previous) {
   const [ current ] = await Model.fetchById(id, previous);
   if (current.password !== previous) {
-    throw new Error('Check old password');
+    throw new Error('Текущий пароль введён неверно');
   }
 }
 
 function checkCandidate(candidate) {
   const regExp = new RegExp(/^\d{6}$/);
   if (!regExp.test(candidate)) {
-    throw new Error('Check new password');
+    throw new Error('В новом пароле должны быть только цифры');
   }
 }
 
 function checkConfirmed(candidate, confirmed) {
   if (candidate !== confirmed) {
-    throw new Error("The passwords are different");
+    throw new Error("Ошибка подтверждения пароля");
   }
 }
 
@@ -28,7 +28,7 @@ async function checkPasswordDate(id) {
   const now = new Date();
   const diff = now - lastChange;
   if (diff < PASS_CHANGE_INTERVAL) {
-    throw new Error('You cannot change password so often');
+    throw new Error('Нельзя менять пароль так часто');
   }
 }
 
@@ -54,10 +54,10 @@ module.exports = class {
       checkConfirmed(candidate, confirmed);
       await checkPasswordDate(id);
       await Model.update(id, ip, candidate);
-      res.status(200).json({message: 'Success'});
+      res.status(200).json({message: 'Данные успешно сохранены'});
     } catch (error) {
       console.log(error);
-      res.status(404).json({
+      res.status(400).json({
         message: error.message,
       });
     }
