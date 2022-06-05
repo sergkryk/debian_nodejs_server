@@ -5,6 +5,7 @@ const { userDetailsController } = require('../controllers/user.js');
 
 const CidController = require('../controllers/cid');
 const PassController = require('../controllers/password');
+const StatsController = require('../controllers/stats');
 
 router.use(tokenVerification)
 
@@ -21,5 +22,8 @@ router.route('/cid')
   router.route('/password')
   .get(PassController.getById)
   .post(PassController.update)
+
+  router.route('/stats')
+  .get(StatsController.getById)
 
 module.exports = router;

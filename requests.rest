@@ -2,7 +2,8 @@ GET http://localhost:9000/user/password
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODE5LCJpYXQiOjE2NTQwNTUzNjEsImV4cCI6MTY1NDA5ODU2MX0.n-Rc25xRNK-qeSg3HWl7BSm2kG09gpkmtJ2ASwnTqMU
 
 ###
-GET http://localhost:9000/admin/cids
+GET http://localhost:9000/user/stats
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODE5LCJpYXQiOjE2NTQ0MzIyNzAsImV4cCI6MTY1NDQ3NTQ3MH0.yYdTujq8xA-Qa8tDyFDsfNzKjFPklnQVqpxxuCAmvBo
 
 ###
 POST http://localhost:9000/user/password
