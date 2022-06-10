@@ -22,8 +22,11 @@ function checkConfirmed(candidate, confirmed) {
 }
 
 async function checkPasswordDate(id) {
-  const PASS_CHANGE_INTERVAL = 10;
+  const PASS_CHANGE_INTERVAL = 1000000;
   const [ dbDate ] = await Actions.fetchPasswordChangeDate(id);
+  if (!dbDate) {
+    return;
+  }
   const lastChange = new Date(dbDate.datetime);
   const now = new Date();
   const diff = now - lastChange;

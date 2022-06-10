@@ -25,5 +25,6 @@ router.route('/cid')
 
   router.route('/stats')
   .get(StatsController.getById)
+  .post(StatsController.getByDates)
 
 module.exports = router;
