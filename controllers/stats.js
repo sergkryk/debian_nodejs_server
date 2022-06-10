@@ -24,7 +24,7 @@ module.exports = class {
     try {
       const id = req.auth.uid;
       const {start, end} = req.body;
-      const stats = await Model.fetchById(id, start, end);
+      const stats = await Model.fetchByDates(id, start, end);
       stats.forEach((el) => {
         el.end = calcEndTime(el.start, el.duration)
       })
