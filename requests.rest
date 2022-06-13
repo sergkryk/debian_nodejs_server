@@ -24,3 +24,7 @@ Content-Type: application/json
   "name": "admin_kryk",
   "password": "09051945"
 }
+
+###
+
+GET http://localhost:9000/admin/addresses

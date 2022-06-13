@@ -16,4 +16,7 @@ router.route('/')
 router.route('/cids')
   .get(CidController.getAll)
 
+  router.route('/addresses')
+  .get(CidController.getAddresses)
+
 module.exports = router;
