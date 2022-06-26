@@ -1,10 +1,10 @@
-const paysModel = require('../models/pays');
+const PaysModel = require('../models/pays');
 
 const allPaysController = async (req, res) => {
   const orderby = req.query.orderby ? req.query.orderby : undefined;
   const rows = req.query.rows ? req.query.rows : undefined;
   
-  const data = await paysModel.fetchAllPays(orderby, rows);
+  const data = await PaysModel.fetchAll(orderby, rows);
   res.send(data);
 }
 
@@ -13,7 +13,7 @@ const userPaysController = async (req, res) => {
   const orderby = req.query.orderby ? req.query.orderby : undefined;
   const rows = req.query.rows ? req.query.rows : undefined;
   try {
-    const data = await paysModel.fetchUserPays(userId, orderby, rows);
+    const data = await PaysModel.fetchPaysByUser(userId, orderby, rows);
     res.send(data);
   }
   catch {

@@ -2,7 +2,7 @@ const pool = require("../utils/db");
 const { performance } = require("perf_hooks");
 
 const { fetchUserTariff } = require("./tariff");
-const { fetchUserPays } = require("./pays");
+const Pays = require("./pays");
 const { fetchUserFees } = require("./fees");
 const { getUserAddress } = require("./address");
 const { getExpireDate, getNextFee, getTariff } = require("../utils/calc");
@@ -29,7 +29,7 @@ const fetchUser = async function (userId) {
     );
     user.tp = getTariff(user, tariff);
 
-    const [prevPay] = await fetchUserPays(userId, "DESC", 1);
+    const [prevPay] = await Pays.fetchPaysByUser(userId, "DESC", 1);
     const [prevFee] = await fetchUserFees(userId, "DESC", 1);
     const address = await getUserAddress(userId);
     const nextFee = getNextFee(user);
