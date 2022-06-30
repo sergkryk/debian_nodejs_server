@@ -29,7 +29,7 @@ const fetchUser = async function (userId) {
     );
     user.tp = getTariff(user, tariff);
 
-    const [prevPay] = await Pays.fetchPaysByUser(userId, "DESC", 1);
+    const [prevPay] = await Pays.fetchByUser(userId);
     const [prevFee] = await fetchUserFees(userId, "DESC", 1);
     const address = await getUserAddress(userId);
     const nextFee = getNextFee(user);

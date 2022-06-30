@@ -1,24 +1,25 @@
 const PaysModel = require('../models/pays');
 
-const allPaysController = async (req, res) => {
-  const orderby = req.query.orderby ? req.query.orderby : undefined;
-  const rows = req.query.rows ? req.query.rows : undefined;
-  
-  const data = await PaysModel.fetchAll(orderby, rows);
-  res.send(data);
-}
-
-const userPaysController = async (req, res) => {
-  const userId = req.params.userId;
-  const orderby = req.query.orderby ? req.query.orderby : undefined;
-  const rows = req.query.rows ? req.query.rows : undefined;
-  try {
-    const data = await PaysModel.fetchPaysByUser(userId, orderby, rows);
-    res.send(data);
+module.exports = class {
+  static async getAll(req, res) {
+    try {
+      const data = await PaysModel.fetchAll();
+      res.status(200).json(data);
+    } 
+    catch (error) {
+      console.log(error);
+      res.status(404).send();
+    }
   }
-  catch {
-    res.status('404').send('Not found');
+  static async getById(req, res) {
+    try {
+      const userId = req.auth.uid;
+      const data = await PaysModel.fetchByUser(userId);
+      res.status(200).json(data);
+    } 
+    catch (error) {
+      console.log(error);
+      res.status(404).send();
+    }
   }
 }
-
-module.exports = { allPaysController, userPaysController };
