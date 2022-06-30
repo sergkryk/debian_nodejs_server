@@ -1,4 +1,4 @@
-GET http://localhost:9000/user/pays
+GET http://localhost:9000/user/fees
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTcsImlhdCI6MTY1NjU3NzQ1MiwiZXhwIjoxNjU2NjIwNjUyfQ.WONe2ACoS-niTHsLDnx1InvNZa_C7IvpJ-X-1VmW9bk
 
 ###

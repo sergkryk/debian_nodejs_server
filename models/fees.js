@@ -1,17 +1,16 @@
 const pool = require('../utils/db');
 
-const fetchAllFees = async function(orderby = 'DESC', rows = 25) {
-  const [ fee ] = await pool.execute(`SELECT * FROM fees ORDER BY date ${orderby} LIMIT ${rows}`);
-  return fee;
+module.exports = class {
+  static async fetchAll() {
+    const [response] = await pool.execute(`SELECT * FROM fees`);
+    return response;
+  }
+  static async fetchByUser(userId) {
+    const [response] = await pool.execute(`SELECT date, sum, dsc, method FROM fees WHERE uid = ${userId}`);
+    return response;
+  }
+  static async fetchUserLast(userId) {
+    const [response] = await pool.execute(`SELECT id, date, sum, dsc, method FROM fees WHERE id = (SELECT max(id) as id FROM fees WHERE uid = ${userId})`);
+    return response;
+  }
 }
-const fetchUserFees = async function(userId, orderby = 'DESC', rows = 25) {
-  // const [ fee ] = await pool.execute(`SELECT date, sum, dsc, method FROM fees WHERE uid = ${userId} ORDER BY date ${orderby} LIMIT ${rows}`);
-  const [ fee ] = await pool.execute(`SELECT id, date, sum, dsc, method FROM fees WHERE id = (SELECT max(id) as id FROM fees WHERE uid = ${userId})`); // более быстрый вариант запроса к базе
-  return fee;
-}
-
-
-module.exports = {
-  fetchAllFees,
-  fetchUserFees,
-};
