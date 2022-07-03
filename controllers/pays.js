@@ -11,10 +11,11 @@ module.exports = class {
       res.status(404).send();
     }
   }
-  static async getById(req, res) {
+  static async getByUser(req, res) {
     try {
       const userId = req.auth.uid;
-      const data = await PaysModel.fetchByUser(userId);
+      const period = req.body;
+      const data = await PaysModel.fetchByUser(userId, period);
       res.status(200).json(data);
     } 
     catch (error) {

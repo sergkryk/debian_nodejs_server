@@ -30,7 +30,7 @@ router.route('/cid')
   .post(StatsController.getByDates)
 
   router.route('/pays')
-  .get(PaysController.getById)
+  .post(PaysController.getByUser)
 
   router.route('/fees')
   .get(FeesController.getById)
