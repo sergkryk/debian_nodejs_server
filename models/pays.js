@@ -6,8 +6,8 @@ module.exports = class {
     return response;
   }
   static async fetchByUser(userId, period) {
-    const {begin, end} = period; 
-    const [response] = await pool.execute(`SELECT date, sum, dsc, method FROM payments WHERE uid = ${userId} AND date BETWEEN FROM_UNIXTIME(${begin / 1000}) AND FROM_UNIXTIME(${end / 1000})`);
+    const {begin, end} = period;
+    const [response] = await pool.execute(`SELECT id, date, sum, dsc, method, last_deposit FROM payments WHERE uid = ${userId} AND date BETWEEN FROM_UNIXTIME(${begin / 1000}) AND FROM_UNIXTIME(${end / 1000})`);
     return response;
   }
   static async fetchUserLast(userId) {

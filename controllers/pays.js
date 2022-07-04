@@ -15,6 +15,9 @@ module.exports = class {
     try {
       const userId = req.auth.uid;
       const period = req.body;
+      if (!period.begin || !period.end) {
+        throw new Error('Specify the period dates')
+      }
       const data = await PaysModel.fetchByUser(userId, period);
       res.status(200).json(data);
     } 

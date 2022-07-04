@@ -33,6 +33,6 @@ router.route('/cid')
   .post(PaysController.getByUser)
 
   router.route('/fees')
-  .get(FeesController.getById)
+  .post(FeesController.getByUser)
 
 module.exports = router;
