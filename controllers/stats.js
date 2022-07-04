@@ -23,8 +23,7 @@ module.exports = class {
   static async getByDates(req, res) {
     try {
       const id = req.auth.uid;
-      const {start, end} = req.body;
-      const stats = await Model.fetchByDates(id, start, end);
+      const stats = await Model.fetchByDates(id, req.body);
       stats.forEach((el) => {
         el.end = calcEndTime(el.start, el.duration)
       })
