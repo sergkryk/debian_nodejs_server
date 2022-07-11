@@ -8,6 +8,7 @@ const PassController = require('../controllers/password');
 const StatsController = require('../controllers/stats');
 const PaysController = require('../controllers/pays');
 const FeesController = require('../controllers/fees');
+const CardsController = require('../controllers/cards');
 
 router.use(tokenVerification)
 
@@ -34,5 +35,8 @@ router.route('/cid')
 
   router.route('/fees')
   .post(FeesController.getByUser)
+  
+  router.route('/cards')
+  .post(CardsController.pay)
 
 module.exports = router;
