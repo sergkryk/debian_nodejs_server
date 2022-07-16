@@ -15,10 +15,13 @@ module.exports = class {
   }
   static async pay(req, res) {
     try {
+      const ip = req.ip;
       const { serial, pin } = req.body;
-      res.status(200).json({serial, pin})
+      const uid = req.auth.uid;
+      const payCard = await CardModel.check({serial, pin});
+      await CardModel.use(uid, payCard, ip);
+      res.status(200).json(payCard)
       // const ip = req.ip;
-      // const id = req.auth.uid;
       // await checkPrevious(id, previous);
       // checkCandidate(candidate);
       // checkConfirmed(candidate, confirmed);
@@ -26,10 +29,9 @@ module.exports = class {
       // await Model.update(id, ip, candidate);
       // res.status(200).json({message: 'Данные успешно сохранены'});
     } catch (error) {
-      // console.log(error);
-      // res.status(400).json({
-        // message: error.message,
-      // });
+      res.status(200).json({
+        message: error.message,
+      });
     }
   }
 }
