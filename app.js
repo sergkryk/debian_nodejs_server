@@ -12,7 +12,10 @@ const tariffRouter = require('./routes/tariff');
 const loginRouter = require('./routes/login');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:8080",
+  credentials: true,
+}));
 
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());

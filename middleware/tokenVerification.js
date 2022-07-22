@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken");
+// const cookie = require('cookie');
 const { secret } = require("../config/secret");
 
 const authenticateToken = function(req, res, next) {
+  // var cookies = cookie.parse(req.headers.cookie || '');
   try {
     const authHeader = req.headers['authorization']
     const bearer = authHeader.split(' ');
