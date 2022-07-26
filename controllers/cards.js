@@ -21,7 +21,7 @@ module.exports = class {
       await CardModel.use(uid, payCard, ip);
       res.status(200).json(payCard)
     } catch (error) {
-      res.status(200).json({
+      res.status(401).json({
         message: error.message,
       });
     }
