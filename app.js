@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('cors');
+// const cors = require('cors');
 
 const PORT = 9000;
 const INTERFACE = '10.100.0.11';
@@ -12,10 +12,10 @@ const tariffRouter = require('./routes/tariff');
 const loginRouter = require('./routes/login');
 
 const app = express();
-app.use(cors({
-  origin: `${INTERFACE}:8080`,
-  credentials: true,
-}));
+// app.use(cors({
+//   origin: `${INTERFACE}:8080`,
+//   credentials: true,
+// }));
 
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
