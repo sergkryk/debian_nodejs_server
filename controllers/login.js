@@ -36,6 +36,7 @@ const checkPassword = (response, password) => {
 };
 
 const loginController = async (req, res) => {
+  console.log(req);
   const { login, password } = req.body;
   if (!login || !password) {
     res.status(404).send({ message: "Provide login or password" });
