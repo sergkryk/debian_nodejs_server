@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 const PORT = 9000;
-const INTERFACE = 'localhost';
+const INTERFACE = '10.100.0.11';
 
 const adminRouter = require('./routes/admin');
 const userRouter = require('./routes/user');
@@ -13,7 +13,7 @@ const loginRouter = require('./routes/login');
 
 const app = express();
 app.use(cors({
-  origin: "http://localhost:8080",
+  origin: `${INTERFACE}:8080`,
   credentials: true,
 }));
 
