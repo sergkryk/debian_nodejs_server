@@ -1,4 +1,4 @@
-GET http://localhost:9000/user/fees
+GET http://10.100.0.11:9000/user
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTcsImlhdCI6MTY1NjU3NzQ1MiwiZXhwIjoxNjU2NjIwNjUyfQ.WONe2ACoS-niTHsLDnx1InvNZa_C7IvpJ-X-1VmW9bk
 
 ###
@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 ###
 
-POST http://localhost:9000/login
+POST http://10.100.0.11:9000/login
 Content-Type: application/json
 
 {
