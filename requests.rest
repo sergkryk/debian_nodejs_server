@@ -21,7 +21,7 @@ POST http://10.100.0.11:9000/login
 Content-Type: application/json
 
 {
-  "name": "admin_kryk",
+  "login": "admin_kryk",
   "password": "09051945"
 }
 

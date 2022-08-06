@@ -13,7 +13,7 @@ const loginRouter = require('./routes/login');
 
 const app = express();
 app.use(cors({
-  origin: `http://10.100.0.4:8080`,
+  origin: `http://localhost:8080`,
   credentials: true,
 }));
 
