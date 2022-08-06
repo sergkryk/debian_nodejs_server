@@ -1,5 +1,5 @@
 GET http://10.100.0.11:9000/user
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTcsImlhdCI6MTY1NjU3NzQ1MiwiZXhwIjoxNjU2NjIwNjUyfQ.WONe2ACoS-niTHsLDnx1InvNZa_C7IvpJ-X-1VmW9bk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk5LCJpYXQiOjE2NTk3ODM0MjcsImV4cCI6MTY1OTgyNjYyN30.m2pu4GaCwCyiWW_VkEmUDaO1BNBtM6rS-ovA60-vPTU
 
 ###
 GET http://localhost:9000/user/stats
