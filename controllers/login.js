@@ -37,6 +37,7 @@ const checkPassword = (response, password) => {
 
 const loginController = async (req, res) => {
   const { login, password } = req.body;
+  console.log(req.body);
   if (!login || !password) {
     res.status(404).send({ message: "Provide login or password" });
     return;
@@ -78,7 +79,7 @@ const loginController = async (req, res) => {
     res.cookie("authorized", 1, {
       maxAge: 60 * 60 * 12 * 1000,
     });
-    res.status(200);
+    res.status(200).json(token);
   } catch (error) {
     console.log(error);
     res.status(401).send({ message: error.message });
