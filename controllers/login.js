@@ -67,12 +67,12 @@ const loginController = async (req, res) => {
     // );
     res.cookie(
       cookie.serialize("token", String(token), {
-        // httpOnly: true,
+        httpOnly: true,
         // secure: process.env.NODE_ENV !== "development",
         // secure: true,
         maxAge: 60 * 60 * 12,
-        // sameSite: "strict",
-        // path: "/",
+        sameSite: "strict",
+        path: "/",
       })
     );
     res.cookie("authorized", 1, {
