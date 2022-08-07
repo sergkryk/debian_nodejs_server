@@ -60,7 +60,7 @@ const loginController = async (req, res) => {
       cookie.serialize('token', String(token), {
         httpOnly: true,
         // secure: process.env.NODE_ENV !== 'development',
-        secure: false,
+        secure: true,
         maxAge: 60 * 60 * 12 * 1000, // 1 week
         sameSite: 'none',
         path: '/'
