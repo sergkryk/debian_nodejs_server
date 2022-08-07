@@ -36,10 +36,7 @@ const checkPassword = (response, password) => {
 };
 
 const loginController = async (req, res) => {
-  console.log(req.body);
   const { login, password } = req.body;
-  console.log(!login);
-  console.log(!password);
   if (!login || !password) {
     res.status(404).send({ message: "Provide login or password" });
     return;
@@ -74,14 +71,14 @@ const loginController = async (req, res) => {
         // secure: process.env.NODE_ENV !== "development",
         // secure: true,
         maxAge: 60 * 60 * 12,
-        sameSite: "strict",
-        path: "/",
+        // sameSite: "strict",
+        // path: "/",
       })
     );
     res.cookie("authorized", 1, {
       maxAge: 60 * 60 * 12 * 1000,
     });
-    res.status(200).json(token);
+    res.status(200);
   } catch (error) {
     console.log(error);
     res.status(401).send({ message: error.message });
