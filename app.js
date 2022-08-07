@@ -16,6 +16,11 @@ const loginRouter = require('./routes/login')
 const hskey = fs.readFileSync('asknet.api-key.pem')
 const hscert = fs.readFileSync('asknet.api-cert.pem')
 
+const options = {
+  key: hskey,
+  cert: hscert
+};
+
 const app = express()
 // app.use(cors({
 //   origin: `http://localhost:8080`,
