@@ -62,7 +62,7 @@ const loginController = async (req, res) => {
         // secure: process.env.NODE_ENV !== 'development',
         secure: false,
         maxAge: 60 * 60 * 12 * 1000, // 1 week
-        sameSite: 'strict',
+        sameSite: 'none',
         path: '/'
       })
     );
