@@ -1,12 +1,12 @@
-GET http://10.100.0.11:9000/user
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk5LCJpYXQiOjE2NTk3ODM0MjcsImV4cCI6MTY1OTgyNjYyN30.m2pu4GaCwCyiWW_VkEmUDaO1BNBtM6rS-ovA60-vPTU
+GET https://10.100.0.11:9000/user
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk5LCJpYXQiOjE2NTk4NzI4MDUsImV4cCI6MTY1OTkxNjAwNX0.3IXMBxNeT70e6-7SFwilBVOkLGjZYrufw06fL8920LE
 
 ###
-GET http://localhost:9000/user/stats
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODE5LCJpYXQiOjE2NTQ0MzIyNzAsImV4cCI6MTY1NDQ3NTQ3MH0.yYdTujq8xA-Qa8tDyFDsfNzKjFPklnQVqpxxuCAmvBo
+GET https://10.100.0.11:9000/user/stats
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk5LCJpYXQiOjE2NTk4NzI4MDUsImV4cCI6MTY1OTkxNjAwNX0.3IXMBxNeT70e6-7SFwilBVOkLGjZYrufw06fL8920LE
 
 ###
-POST http://localhost:9000/user/password
+POST https://10.100.0.11:9000/user/password
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODE5LCJpYXQiOjE2NTQwNTUzNjEsImV4cCI6MTY1NDA5ODU2MX0.n-Rc25xRNK-qeSg3HWl7BSm2kG09gpkmtJ2ASwnTqMU
 Content-Type: application/json
 
@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 ###
 
-POST http://10.100.0.11:9000/login
+POST https://10.100.0.11:9000/login
 Content-Type: application/json
 
 {
