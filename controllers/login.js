@@ -54,7 +54,6 @@ const loginController = async (req, res) => {
       expiresIn: "12h",
       algorithm: "HS256",
     });
-    console.log(cookie.serialize("token", String(token)));
     res.setHeader(
       "Set-Cookie",
       cookie.serialize("token", String(token), {
@@ -68,7 +67,7 @@ const loginController = async (req, res) => {
     );
     res.setHeader(
       "Set-Cookie",
-      "authorized: 1", {
+      cookie.serialize("authorized", 1), {
       // secure: process.env.NODE_ENV !== 'development',
       secure: true,
       maxAge: 60 * 60 * 12 * 1000, // 1 week
