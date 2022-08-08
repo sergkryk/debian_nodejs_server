@@ -60,7 +60,7 @@ const loginController = async (req, res) => {
         // httpOnly: true,
         // secure: true,
         maxAge: 60 * 60 * 12,
-        // sameSite: "none",
+        sameSite: "none",
         // path: "/",
       })
     );
