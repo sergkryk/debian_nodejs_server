@@ -1,7 +1,7 @@
 const express = require('express')
 // const cors = require('cors')
-const https = require('https')
-const fs = require('fs')
+// const https = require('https')
+// const fs = require('fs')
 
 const PORT = 9000
 const INTERFACE = '10.0.0.7'
@@ -13,13 +13,13 @@ const paysRouter = require('./routes/pays')
 const tariffRouter = require('./routes/tariff')
 const loginRouter = require('./routes/login')
 
-const hskey = fs.readFileSync('asknet.api-key.pem')
-const hscert = fs.readFileSync('asknet.api-cert.pem')
+// const hskey = fs.readFileSync('asknet.api-key.pem')
+// const hscert = fs.readFileSync('asknet.api-cert.pem')
 
-const options = {
-  key: hskey,
-  cert: hscert
-};
+// const options = {
+//   key: hskey,
+//   cert: hscert
+// };
 
 const app = express()
 // app.use(cors({
@@ -51,11 +51,11 @@ app.use((req, res) => {
   })
 })
 
-// app.listen(PORT, INTERFACE, () => {
-//   console.log(`The server started on ${INTERFACE} port ${PORT}`)
-// });
-
-const server = https.createServer(options, app);
-server.listen(PORT, INTERFACE, () => {
+app.listen(PORT, INTERFACE, () => {
   console.log(`The server started on ${INTERFACE} port ${PORT}`)
-})
+});
+
+// const server = https.createServer(options, app);
+// server.listen(PORT, INTERFACE, () => {
+//   console.log(`The server started on ${INTERFACE} port ${PORT}`)
+// })

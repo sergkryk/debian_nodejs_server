@@ -1,4 +1,4 @@
-GET https://10.100.0.11:9000/user
+GET http://45.131.97.142:9000/user
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk5LCJpYXQiOjE2NTk4NzI4MDUsImV4cCI6MTY1OTkxNjAwNX0.3IXMBxNeT70e6-7SFwilBVOkLGjZYrufw06fL8920LE
 
 ###
@@ -27,4 +27,4 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:9000/admin/addresses
+GET http://45.131.97.142:9000/admin/addresses
