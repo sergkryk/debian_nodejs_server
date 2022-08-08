@@ -65,15 +65,15 @@ const loginController = async (req, res) => {
         path: "/",
       })
     );
-    res.setHeader(
-      "Set-Cookie",
-      cookie.serialize("authorized", 1), {
-      // secure: process.env.NODE_ENV !== 'development',
-      secure: true,
-      maxAge: 60 * 60 * 12 * 1000,
-      sameSite: "none",
-      path: "/",
-    });
+    // res.setHeader(
+    //   "Set-Cookie",
+    //   cookie.serialize("authorized", 1), {
+    //   // secure: process.env.NODE_ENV !== 'development',
+    //   secure: true,
+    //   maxAge: 60 * 60 * 12 * 1000,
+    //   sameSite: "none",
+    //   path: "/",
+    // });
     // res.cookie(
     //   cookie.serialize("token", String(token), {
     //     httpOnly: true,
@@ -83,12 +83,12 @@ const loginController = async (req, res) => {
     //     sameSite: 'None',
     //   })
     // );
-    // res.cookie("authorized", 1, {
-    //   maxAge: 60 * 60 * 12 * 1000,
-    //   // secure: process.env.NODE_ENV !== "development",
-    //   secure: true,
-    //   sameSite: 'none',
-    // });
+    res.cookie("authorized", 1, {
+      maxAge: 60 * 60 * 12 * 1000,
+      // secure: process.env.NODE_ENV !== "development",
+      secure: true,
+      sameSite: 'none',
+    });
     res.status(200).json(token);
   } catch (error) {
     console.log(error);
