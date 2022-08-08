@@ -78,7 +78,7 @@ const loginController = async (req, res) => {
       secure: true,
       sameSite: 'none',
     });
-    res.status(200);
+    res.status(200).json({message: "Login succesfull"});
   } catch (error) {
     console.log(error);
     res.status(401).send({ message: error.message });
