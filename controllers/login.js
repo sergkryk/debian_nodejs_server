@@ -75,8 +75,8 @@ const loginController = async (req, res) => {
     // );
     res.cookie("authorized", 1, {
       maxAge: 60 * 60 * 12 * 1000,
-      secure: true,
-      sameSite: 'none',
+      // secure: true,
+      // sameSite: 'none',
     });
     res.status(200).json({message: "Login succesfull"});
   } catch (error) {
