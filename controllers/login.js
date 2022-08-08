@@ -58,22 +58,12 @@ const loginController = async (req, res) => {
       "Set-Cookie",
       cookie.serialize("token", String(token), {
         httpOnly: true,
-        // secure: process.env.NODE_ENV !== 'development',
         secure: true,
-        maxAge: 60 * 60 * 12 * 1000,
+        maxAge: 60 * 60 * 12,
         sameSite: "none",
         path: "/",
       })
     );
-    // res.setHeader(
-    //   "Set-Cookie",
-    //   cookie.serialize("authorized", 1), {
-    //   // secure: process.env.NODE_ENV !== 'development',
-    //   secure: true,
-    //   maxAge: 60 * 60 * 12 * 1000,
-    //   sameSite: "none",
-    //   path: "/",
-    // });
     // res.cookie(
     //   cookie.serialize("token", String(token), {
     //     httpOnly: true,
@@ -85,11 +75,10 @@ const loginController = async (req, res) => {
     // );
     res.cookie("authorized", 1, {
       maxAge: 60 * 60 * 12 * 1000,
-      // secure: process.env.NODE_ENV !== "development",
       secure: true,
       sameSite: 'none',
     });
-    res.status(200).json(token);
+    res.status(200);
   } catch (error) {
     console.log(error);
     res.status(401).send({ message: error.message });
