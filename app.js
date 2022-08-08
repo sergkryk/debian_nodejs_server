@@ -13,8 +13,8 @@ const paysRouter = require('./routes/pays')
 const tariffRouter = require('./routes/tariff')
 const loginRouter = require('./routes/login')
 
-const hskey = fs.readFileSync('asknet.api-key.pem')
-const hscert = fs.readFileSync('asknet.api-cert.pem')
+const hskey = fs.readFileSync('privkey.pem')
+const hscert = fs.readFileSync('fullchain.pm')
 
 const options = {
   key: hskey,

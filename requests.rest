@@ -1,9 +1,9 @@
-GET http://45.131.97.142:9000/user
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk5LCJpYXQiOjE2NTk4NzI4MDUsImV4cCI6MTY1OTkxNjAwNX0.3IXMBxNeT70e6-7SFwilBVOkLGjZYrufw06fL8920LE
+GET https://45.131.97.142:9000/user
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk5LCJpYXQiOjE2NTk5NjU0NjMsImV4cCI6MTY2MDAwODY2M30.LT3NvIPjpa3HBYIElyIWY2ObXti2Y70ylBa2L5pow1g
 
 ###
-GET https://10.100.0.11:9000/user/stats
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk5LCJpYXQiOjE2NTk4NzI4MDUsImV4cCI6MTY1OTkxNjAwNX0.3IXMBxNeT70e6-7SFwilBVOkLGjZYrufw06fL8920LE
+GET https://45.131.97.142:9000/user/stats
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk5LCJpYXQiOjE2NTk5NjU0NjMsImV4cCI6MTY2MDAwODY2M30.LT3NvIPjpa3HBYIElyIWY2ObXti2Y70ylBa2L5pow1g
 
 ###
 POST https://10.100.0.11:9000/user/password
@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 ###
 
-POST http://45.131.97.142:9000/login
+POST https://45.131.97.142:9000/login
 Content-Type: application/json
 
 {
@@ -27,4 +27,13 @@ Content-Type: application/json
 
 ###
 
-GET http://79.143.24.66:9000/admin/addresses
+GET https://45.131.97.142:9000/admin/addresses
+
+###
+POST https://billing.asknet.online:9000/login
+Content-Type: application/json
+
+{
+  "login": "admin_kryk",
+  "password": "09051945"
+}
