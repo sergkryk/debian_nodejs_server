@@ -79,7 +79,7 @@ const loginController = async (req, res) => {
       maxAge: 60 * 60 * 12 * 1000,
       // secure: process.env.NODE_ENV !== "development",
       secure: true,
-      sameSite: 'none',
+      sameSite: "none",
     });
     res.status(200).json(token);
   } catch (error) {
