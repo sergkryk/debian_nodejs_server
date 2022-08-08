@@ -77,6 +77,7 @@ const loginController = async (req, res) => {
     );
     res.cookie("authorized", 1, {
       maxAge: 60 * 60 * 12 * 1000,
+      // secure: process.env.NODE_ENV !== "development",
       secure: true,
       sameSite: 'none',
     });
