@@ -19,34 +19,30 @@ router
     .post()
     .put()
     .delete();
-
 router
   .route("/uid")
-    .get(UidController.get);
-
+    .get(UidController.get)
+    .post()
+    .put()
+    .delete();
 router
   .route("/cid")
     .get(CidController.getById)
     .put(CidController.reset);
-
 router
   .route("/password")
     .get(PassController.getById)
     .post(PassController.update);
-
 router
   .route("/stats")
     .get(StatsController.getById)
     .post(StatsController.getByDates);
-
 router
   .route("/pays")
     .post(PaysController.getByUser);
-
 router
   .route("/fees")
     .post(FeesController.getByUser);
-
 router
   .route("/cards")
     .post(CardsController.pay);
