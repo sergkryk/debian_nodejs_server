@@ -58,7 +58,7 @@ const loginController = async (req, res) => {
       "Set-Cookie",
       cookie.serialize("token", String(token), {
         // httpOnly: true,
-        // secure: true,
+        secure: true,
         maxAge: 60 * 60 * 12,
         sameSite: "none",
         // path: "/",
