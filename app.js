@@ -1,5 +1,5 @@
 const express = require('express')
-// const cors = require('cors')
+const cors = require('cors')
 const https = require('https')
 const fs = require('fs')
 
@@ -22,16 +22,16 @@ const options = {
 };
 
 const app = express()
-// app.use(cors({
-//   origin: `http://localhost:8080`,
-//   credentials: true,
-// }));
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-  res.header("Access-Control-Allow-Origin", "http://localhost:8080")
-  res.header("Access-Control-Allow-Credentials", "true")
-  next()
-});
+app.use(cors({
+  origin: `http://localhost:8080`,
+  credentials: true,
+}));
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+//   res.header("Access-Control-Allow-Origin", "http://localhost:8080")
+//   res.header("Access-Control-Allow-Credentials", "true")
+//   next()
+// });
 
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
