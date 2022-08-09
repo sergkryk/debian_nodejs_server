@@ -64,16 +64,7 @@ const loginController = async (req, res) => {
         // path: "/",
       })
     );
-    // res.cookie(
-    //   cookie.serialize("token", String(token), {
-    //     httpOnly: true,
-    //     maxAge: 60 * 60 * 12,
-    //     // secure: process.env.NODE_ENV !== "development",
-    //     secure: true,
-    //     sameSite: 'None',
-    //   })
-    // );
-    res.status(200).json({message: "Login succesfull"});
+    res.status(200).send();
   } catch (error) {
     console.log(error);
     res.status(401).send({ message: error.message });
