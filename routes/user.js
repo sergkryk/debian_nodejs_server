@@ -9,30 +9,46 @@ const StatsController = require("../controllers/stats");
 const PaysController = require("../controllers/pays");
 const FeesController = require("../controllers/fees");
 const CardsController = require("../controllers/cards");
-const AuthorizationController = require("../controllers/authorization");
+const UidController = require("../controllers/uid");
 
 router.use(tokenVerification);
 
-router.route("/").get(userDetailsController).post().put().delete();
+router
+  .route("/")
+    .get(userDetailsController)
+    .post()
+    .put()
+    .delete();
 
-router.route("/authorization").get(AuthorizationController.status);
+router
+  .route("/uid")
+    .get(UidController.get);
 
-router.route("/cid").get(CidController.getById).put(CidController.reset);
+router
+  .route("/cid")
+    .get(CidController.getById)
+    .put(CidController.reset);
 
 router
   .route("/password")
-  .get(PassController.getById)
-  .post(PassController.update);
+    .get(PassController.getById)
+    .post(PassController.update);
 
 router
   .route("/stats")
-  .get(StatsController.getById)
-  .post(StatsController.getByDates);
+    .get(StatsController.getById)
+    .post(StatsController.getByDates);
 
-router.route("/pays").post(PaysController.getByUser);
+router
+  .route("/pays")
+    .post(PaysController.getByUser);
 
-router.route("/fees").post(FeesController.getByUser);
+router
+  .route("/fees")
+    .post(FeesController.getByUser);
 
-router.route("/cards").post(CardsController.pay);
+router
+  .route("/cards")
+    .post(CardsController.pay);
 
 module.exports = router;
