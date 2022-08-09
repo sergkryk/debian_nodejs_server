@@ -61,7 +61,6 @@ const loginController = async (req, res) => {
         secure: true,
         maxAge: 60 * 60 * 12,
         sameSite: "none",
-        // path: "/",
       })
     );
     res.status(200).send();
