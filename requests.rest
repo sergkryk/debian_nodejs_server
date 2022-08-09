@@ -27,7 +27,7 @@ Content-Type: application/json
 
 ###
 
-GET https://billing.asknet.online:9000/admin/addresses
+GET https://billing.asknet.online:9000/user/authorization
 
 ###
 POST https://billing.asknet.online:9000/login
