@@ -27,7 +27,7 @@ const options = {
 
 const app = express()
 app.use(cors({
-  origin: `http://localhost:8080`,
+  origin: `https://asknet.online`,
   credentials: true,
 }));
 
