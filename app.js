@@ -7,7 +7,8 @@ const fs = require('fs')
 
 
 const PORT = 9000;
-const INTERFACE = "localhost";
+// const INTERFACE = "localhost";
+const INTERFACE = "10.100.0.11";
 // const ORIGIN = "http://localhost:8080";
 // const ORIGIN = 'https://asknet.online'
 const ORIGIN = 'http://10.100.0.100'
