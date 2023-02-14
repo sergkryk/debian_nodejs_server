@@ -31,6 +31,7 @@ const INTERFACE = "195.158.222.116"
 
 
 const app = express();
+app.use(express.static('static'));
 // app.use(
 //   cors({
 //     origin: ORIGIN,
