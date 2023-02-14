@@ -23,7 +23,7 @@ const INTERFACE = "195.158.222.116"
 
 // https сервер
 const hskey = fs.readFileSync('./sslcert/privkey.pem')
-const hscert = fs.readFileSync('./sslcert/fullchain.pm')
+const hscert = fs.readFileSync('./sslcert/fullchain.pem')
 const options = {
 key: hskey,
 cert: hscert
