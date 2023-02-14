@@ -2,11 +2,11 @@ const express = require("express");
 // const cors = require("cors");
 
 // https сервер
-// const https = require('https')
-// const fs = require('fs')
+const https = require('https')
+const fs = require('fs')
 
 
-const PORT = 80;
+const PORT = 443;
 const INTERFACE = "195.158.222.116"
 // const INTERFACE = "localhost";
 // const INTERFACE = "10.100.0.11";
@@ -22,12 +22,12 @@ const INTERFACE = "195.158.222.116"
 // const loginRouter = require("./routes/login");
 
 // https сервер
-// const hskey = fs.readFileSync('privkey.pem')
-// const hscert = fs.readFileSync('fullchain.pm')
-// const options = {
-// key: hskey,
-// cert: hscert
-// };
+const hskey = fs.readFileSync('./sslcert/privkey.pem')
+const hscert = fs.readFileSync('./sslcert/fullchain.pm')
+const options = {
+key: hskey,
+cert: hscert
+};
 
 
 const app = express();
@@ -62,12 +62,12 @@ app.get('/', (req, res) => {
 })
 
 // http сервер
-app.listen(PORT, INTERFACE, () => {
-  console.log(`The server started on ${INTERFACE} port ${PORT}`);
-});
+// app.listen(PORT, INTERFACE, () => {
+  // console.log(`The server started on ${INTERFACE} port ${PORT}`);
+// });
 
 // https сервер
-// const server = https.createServer(options, app);
-// server.listen(PORT, INTERFACE, () => {
-//   console.log(`The server started on ${INTERFACE} port ${PORT}`)
-// })
+const server = https.createServer(options, app);
+server.listen(PORT, INTERFACE, () => {
+  console.log(`The server started on ${INTERFACE} port ${PORT}`)
+})
