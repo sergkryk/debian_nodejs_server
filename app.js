@@ -6,7 +6,7 @@ const express = require("express");
 // const fs = require('fs')
 
 
-const PORT = 9000;
+const PORT = 80;
 const INTERFACE = "195.158.222.116"
 // const INTERFACE = "localhost";
 // const INTERFACE = "10.100.0.11";
