@@ -56,6 +56,10 @@ const app = express();
 //   });
 // });
 
+app.get('/', (req, res) => {
+  res.send("hello")
+})
+
 // http сервер
 app.listen(PORT, INTERFACE, () => {
   console.log(`The server started on ${INTERFACE} port ${PORT}`);
