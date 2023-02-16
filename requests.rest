@@ -1,39 +1,10 @@
-GET https://billing.asknet.online:9000/user
-Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk5LCJpYXQiOjE2NjAwMTc1OTMsImV4cCI6MTY2MDA2MDc5M30.5P1YJ59NoyZrpKstdExB7NP93r64WO99_hD-NusBCeM
+GET http://127.0.0.1:3000/psb?QueryType=check&TransactionId=123456&Account=2128506
 
 ###
-GET https://billing.asknet.online:9000/user/stats
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk5LCJpYXQiOjE2NjAwMTc0MzAsImV4cCI6MTY2MDA2MDYzMH0.LoPIJXPJrqKHE9ob8trXmdrTBwuo_R1iNjsvuQ61F7w
+# POST https://billing.asknet.online:9000/login
+# Content-Type: application/json
 
-###
-POST https://billing.asknet.online:9000/user/password
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk5LCJpYXQiOjE2NjAwMTc0MzAsImV4cCI6MTY2MDA2MDYzMH0.LoPIJXPJrqKHE9ob8trXmdrTBwuo_R1iNjsvuQ61F7w
-Content-Type: application/json
-
-{
-  "previous": "555555",
-  "candidate": "555555",
-  "confirmed": "555555"
-}
-###
-
-POST https://billing.asknet.online:9000/login
-Content-Type: application/json
-
-{
-  "login": "admin_kryk",
-  "password": "09051945"
-}
-
-###
-
-GET https://billing.asknet.online:9000/user/authorization
-
-###
-POST https://billing.asknet.online:9000/login
-Content-Type: application/json
-
-{
-  "login": "admin_kryk",
-  "password": "09051945"
-}
+# {
+#   "login": "admin_kryk",
+#   "password": "09051945"
+# }
