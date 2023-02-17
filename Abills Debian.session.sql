@@ -1,0 +1,1 @@
+SELECT id FROM payments WHERE ext_id = 'GG00000000159';

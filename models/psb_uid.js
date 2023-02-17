@@ -1,9 +1,9 @@
 const pool = require("../utils/db");
 
-async function getStatus(id) {
+async function fetchUid(id) {
   try {
     const [[res]] = await pool.execute(
-      `SELECT id, uid, disable FROM users WHERE id = 'user_${id}'`
+      `SELECT uid FROM users WHERE id = 'user_${id}'`
     );
     return res;
   } catch (error) {
@@ -11,4 +11,4 @@ async function getStatus(id) {
   }
 }
 
-module.exports = getStatus;
+module.exports = fetchUid;

@@ -1,8 +1,10 @@
 const xml = require("xml");
 
 const codes = require("../config/resultCodes.js");
-const fetchUid = require("../models/uid.js");
+const fetchDisable = require("../models/psb_disable.js");
+const fetchTransaction = require("../models/psb_transaction.js");
 const fetchName = require("../models/psb_fio.js");
+const fetchUid = require("../models/psb_uid.js");
 
 class QueryController {
   constructor(args) {
@@ -13,11 +15,31 @@ class QueryController {
     this.comment = "";
     this.fio = "";
   }
-  async setFio() {
-    if (this.uid) {
-      const { fio } = await fetchName(this.uid);
-      this.fio = fio;
+  async verifyDisable() {
+    this.disable = await fetchDisable(this.uid);
+    if (this.disable === 1) {
+      this.resultCode = codes.acc_disabled;
+      throw new Error();
     }
+  }
+  async verifyTransaction() {
+    this.isUnique = await fetchTransaction(this.TransactionId);
+    if (!this.isUnique) {
+      this.resultCode = codes.not_finished;
+      throw new Error();
+    }
+  }
+  async verifyUid() {
+    const data = await fetchUid(this.Account);
+    if (typeof data !== "object") {
+      this.resultCode = codes.not_found;
+      throw new Error();
+    }
+    this.uid = data.uid;
+  }
+  async fetchFio() {
+    const data = await fetchName(this.uid);
+    this.fio = data.fio;
   }
   getCheckXmlResponse() {
     return xml(
@@ -25,31 +47,19 @@ class QueryController {
         Response: [
           { TransactionId: this.TransactionId },
           { ResultCode: this.resultCode },
-          { Fields: [{ field1: [{ _attr: { name1: "name1" } }, this.fio] }] },
+          { Fields: [{ field1: [{ _attr: { name: "name" } }, this.fio] }] },
           { Comment: this.comment },
+          { Uid: this.uid },
         ],
       },
       { declaration: true }
     );
   }
-  async verifyTransactionId() {
-    
-  }
   async check() {
     try {
-      const user = await fetchUid(this.Account);
-      if (typeof user !== "object") {
-        this.resultCode = codes.not_found;
-        throw new Error();
-      }
-      for (let key in user) {
-        this[key] = user[key];
-      }
-      await this.setFio();
-      if (Number(this.disable) === 1) {
-        this.resultCode = codes.acc_disabled;
-        throw new Error();
-      }
+      await this.verifyUid();
+      await this.fetchFio();
+      await this.verifyDisable();
       this.resultCode = codes.ok;
       return this.getCheckXmlResponse();
     } catch (error) {
@@ -59,9 +69,15 @@ class QueryController {
   }
   async pay() {
     try {
-      return await this.check();
+      await this.verifyUid();
+      await this.fetchFio();
+      await this.verifyDisable();
+      await this.verifyTransaction();
+      this.resultCode = codes.ok;
+      return this.getCheckXmlResponse();
     } catch (error) {
-      
+      console.log(error);
+      return this.getCheckXmlResponse();
     }
   }
 }
