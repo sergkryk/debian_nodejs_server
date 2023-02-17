@@ -1,4 +1,4 @@
-GET http://127.0.0.1:3000/psb?QueryType=check&TransactionId=123456&Account=2128506
+GET http://127.0.0.1:3000/psb?QueryType=pay&TransactionId=1234567&Account=101111
 
 ###
 # POST https://billing.asknet.online:9000/login

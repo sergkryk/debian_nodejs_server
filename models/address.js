@@ -48,10 +48,10 @@ const renderPersonalInfo = (personal) => {
     ]
 }
 
-const getUserAddress = async function(userId) {
+const fetchAddress = async function(userId) {
   const [[ address ]] = await pool.execute(`SELECT fio, phone, email, city, address_street as street, address_build as build, address_flat as flat FROM users_pi WHERE uid = ${userId}`);
   const result = renderPersonalInfo(address);
   return result;
 }
 
-module.exports = { getUserAddress };
+module.exports = fetchAddress;
