@@ -1,6 +1,6 @@
 const pool = require("../utils/db");
 
-async function fetchTransaction(id) {
+async function isUnique(id) {
   try {
     const [ res ] = await pool.execute(
       `SELECT id FROM payments WHERE ext_id = '${id}'`
@@ -14,4 +14,4 @@ async function fetchTransaction(id) {
   }
 }
 
-module.exports = fetchTransaction;
+module.exports = isUnique;

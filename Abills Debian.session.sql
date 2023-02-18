@@ -1,1 +1,1 @@
-SELECT id FROM payments WHERE ext_id = 'GG00000000159';
+SELECT * FROM payments WHERE ext_id = 144;

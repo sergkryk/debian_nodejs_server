@@ -3,7 +3,7 @@ const pool = require("../utils/db");
 async function sendPay(uid, transactionId, transactionDate, amount, ip) {
   const today = new Date().getTime();
   // создаём запись об оплате в таблице payments //
-  await pool.execute(
+  const payRes = await pool.execute(
     `INSERT INTO payments (
         date,
         sum,
@@ -34,12 +34,11 @@ async function sendPay(uid, transactionId, transactionDate, amount, ip) {
         '${amount}'
       )`
   );
-  // обновляем депозит в таблице bills у пользователя //
-  await pool.execute(
-    `UPDATE bills SET deposit = deposit + ${parseFloat(
-      amount
-    )} where uid = ${uid}`
-  );
+
+  if (payRes.length > 0 && payRes[0].insertId) {
+    return payRes[0].insertId;
+  }
+  throw new Error("Something went wrong while payment!");
 }
 
 module.exports = sendPay;
