@@ -5,6 +5,7 @@ const fetchDisable = require("../models/psb_disable.js");
 const fetchTransaction = require("../models/psb_transaction.js");
 const fetchName = require("../models/psb_fio.js");
 const fetchUid = require("../models/psb_uid.js");
+const sendPay = require("../models/psb_pay.js");
 
 class QueryController {
   constructor(args) {
@@ -14,6 +15,9 @@ class QueryController {
     this.resultCode = codes.other;
     this.comment = "";
     this.fio = "";
+  }
+  async sendTransaction() {
+    await sendPay(this.uid, this.TransactionId, this.TransactionDate, this.Amount, '195.158.222.10')
   }
   async verifyDisable() {
     this.disable = await fetchDisable(this.uid);
@@ -73,6 +77,8 @@ class QueryController {
       await this.fetchFio();
       await this.verifyDisable();
       await this.verifyTransaction();
+      await this.sendTransaction();
+      
       this.resultCode = codes.ok;
       return this.getCheckXmlResponse();
     } catch (error) {

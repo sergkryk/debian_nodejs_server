@@ -1,4 +1,4 @@
-GET http://127.0.0.1:3000/psb?QueryType=pay&TransactionId=F230100000000118&Account=3356
+GET http://127.0.0.1:3000/psb?QueryType=pay&TransactionId=F22010000000118899&TransactionDate=20080625120101&Account=3355&Amount=20.50
 
 ###
 # POST https://billing.asknet.online:9000/login
