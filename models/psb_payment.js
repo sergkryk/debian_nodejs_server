@@ -1,7 +1,5 @@
 const pool = require("../utils/db");
-
 async function sendPay(uid, transactionId, transactionDate, amount, ip) {
-  const today = new Date().getTime();
   // создаём запись об оплате в таблице payments //
   const payRes = await pool.execute(
     `INSERT INTO payments (
@@ -19,9 +17,9 @@ async function sendPay(uid, transactionId, transactionDate, amount, ip) {
         currency,amount
         )
        VALUES (
-        FROM_UNIXTIME(${today / 1000}),
+        NOW(),
         '${amount}',
-        '${transactionDate}',
+        ${transactionDate},
         INET_ATON('${ip}'),
         (SELECT deposit FROM bills WHERE uid = ${uid}),
         ${uid},

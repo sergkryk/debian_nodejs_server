@@ -1,5 +1,7 @@
 const xml = require("xml");
 
+const Report = require('../models/psb_report');
+
 class QueryController {
   constructor(args) {
     for (let key in args) {
@@ -9,29 +11,26 @@ class QueryController {
 
   sendXmlResponse() {
     return xml(
-      {
-        Response: [
-          { TransactionId: '' },
-          { TransactionExt: '' },
-          { Amount: '' },
-          { ResultCode: '' },
-          { Comment: '' },
-        ],
-      },
+      { Response: this.items},
       { declaration: true }
     );
   }
   async response() {
     try {
-      return this.sendXmlResponse();
+      this.items = await Report.find(this.CheckDateBegin, this.CheckDateEnd);
+      if (this.items.length > 0) {
+        return this.sendXmlResponse();
+      }
+      throw new Error('Not found!')
     } catch (error) {
-
+      console.log(error);
+      return this.sendXmlResponse();
     }
   }
 }
 
 async function init(req, res, next) {
-  const controller = new QueryController();
+  const controller = new QueryController(req.query);
   const data = await controller.response();
   res.set("Content-Type", "text/xml");
   res.send(data);

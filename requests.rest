@@ -1,4 +1,8 @@
-GET http://127.0.0.1:3000/psb?QueryType=check&TransactionId=141&TransactionDate=20080625120101&Account=3355&Amount=20.50
+GET http://127.0.0.1:3000/psb?QueryType=pay&TransactionId=145&TransactionDate=20230219130000&Account=1201&Amount=1000
+
+
+###
+GET http://127.0.0.1:3000/paydayreport?CheckDateBegin=20230219000000&CheckDateEnd=20230219235959
 
 ###
 # POST https://billing.asknet.online:9000/login
