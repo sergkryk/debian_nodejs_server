@@ -1,5 +1,6 @@
 const xml = require("xml");
 
+const reqIp = require("../config/psb_ip.js");
 const Report = require('../models/psb_report');
 
 class QueryController {
@@ -7,6 +8,7 @@ class QueryController {
     for (let key in args) {
       this[key] = args[key];
     }
+    this.reqIp = reqIp;
   }
 
   sendXmlResponse() {
@@ -17,7 +19,7 @@ class QueryController {
   }
   async response() {
     try {
-      this.items = await Report.find(this.CheckDateBegin, this.CheckDateEnd);
+      this.items = await Report.find(this.CheckDateBegin, this.CheckDateEnd, this.reqIp);
       if (this.items.length > 0) {
         return this.sendXmlResponse();
       }
@@ -29,7 +31,7 @@ class QueryController {
   }
 }
 
-async function init(req, res, next) {
+async function init(req, res) {
   const controller = new QueryController(req.query);
   const data = await controller.response();
   res.set("Content-Type", "text/xml");
