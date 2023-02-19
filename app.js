@@ -1,10 +1,29 @@
 const express = require("express");
 
-const PORT = 3000;
-const INTERFACE = "127.0.0.1";
 
+// https сервер
+const https = require('https')
+const fs = require('fs')
+
+//routes
 const psbRouter = require("./routes/psb");
 const psbReportRouter = require("./routes/psb_report");
+
+
+const PORT = 8443;
+const INTERFACE = "195.158.222.116"
+// const PORT = 3000;
+// const INTERFACE = "127.0.0.1";
+
+// https сервер
+const hskey = fs.readFileSync('./sslcert/privkey.pem')
+const hscert = fs.readFileSync('./sslcert/fullchain.pem')
+const options = {
+key: hskey,
+cert: hscert
+};
+
+
 
 
 const app = express();
@@ -14,6 +33,12 @@ const app = express();
 app.use('/psb', psbRouter)
 app.use('/paydayreport', psbReportRouter)
 
-app.listen(PORT, INTERFACE, () => {
-  console.log(`The server started on ${INTERFACE} port ${PORT}`);
-});
+// app.listen(PORT, INTERFACE, () => {
+//   console.log(`The server started on ${INTERFACE} port ${PORT}`);
+// });
+
+// https сервер
+const server = https.createServer(options, app);
+server.listen(PORT, INTERFACE, () => {
+  console.log(`The server started on ${INTERFACE} port ${PORT}`)
+})
