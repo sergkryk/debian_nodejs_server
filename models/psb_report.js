@@ -17,7 +17,6 @@ async function find(start, end, ip) {
   const data = await pool.execute(
     `SELECT p.ext_id as TransactionId, u.id as Account, p.dsc as TransactionDate, p.sum as Amount FROM payments p INNER JOIN users u ON u.uid = p.uid WHERE ip = INET_ATON('${ip}') AND date BETWEEN TIMESTAMP(${start}) AND TIMESTAMP(${end})`
   );
-  console.log(data);
   if (data.length > 0) {
     const body = data[0];
     const xmlItems = [];
