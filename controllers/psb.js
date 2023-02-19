@@ -1,6 +1,8 @@
 const xml = require("xml");
 
 const codes = require("../config/resultCodes.js");
+const psbIp = require("../config/psb_ip.js");
+
 const fetchDisable = require("../models/psb_disable.js");
 const isUnique = require("../models/psb_unique.js");
 const fetchName = require("../models/psb_fio.js");
@@ -16,6 +18,7 @@ class QueryController {
     for (let key in args) {
       this[key] = args[key];
     }
+    this.reqIp = psbIp;
     this.resultCode = codes.other;
     this.comment = "";
     this.fio = "";
@@ -29,7 +32,7 @@ class QueryController {
       this.TransactionId,
       this.TransactionDate,
       this.Amount,
-      "195.158.222.10"
+      this.reqIp,
     );
   }
   async findTransaction() {
@@ -68,7 +71,7 @@ class QueryController {
     this.isSubstracted = await Bill.substract(this.uid, this.Amount);
   }
   async logTransactionCancel() {
-    await Actions.recordCancelPayment(this.uid, this.TransactionId, '127.0.0.1');
+    await Actions.recordCancelPayment(this.uid, this.TransactionId, this.reqIp);
   }
   sendXmlResponse() {
     const responses = {
@@ -124,8 +127,9 @@ class QueryController {
       if (this.isPaid) {
         this.resultCode = codes.ok;
         return this.sendXmlResponse();
+      } else {
+        throw new Error("Failed to process payment!");
       }
-      throw new Error("Failed to process payment!");
     } catch (error) {
       console.log(error);
       return this.sendXmlResponse();
@@ -153,7 +157,7 @@ class QueryController {
   }
 }
 
-async function init(req, res, next) {
+async function init(req, res) {
   const controller = new QueryController(req.query);
   const data = await controller[req.query.QueryType]();
   res.set("Content-Type", "text/xml");

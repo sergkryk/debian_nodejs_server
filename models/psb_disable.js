@@ -1,10 +1,14 @@
 const pool = require("../utils/db");
 
 async function fetchDisable(id) {
-  const [[res]] = await pool.execute(
+  const [[data]] = await pool.execute(
     `SELECT disable FROM users WHERE uid = '${id}'`
   );
-  return res.disable;
+  if (data) {
+    return data.disable;
+  } else {
+    return "";
+  }
 }
 
 module.exports = fetchDisable;

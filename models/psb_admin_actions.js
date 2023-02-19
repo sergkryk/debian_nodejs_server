@@ -19,7 +19,6 @@ async function recordCancelPayment(uid, transactionId, ip) {
       10
     );`
   );
-  console.log(response);
 }
 
 module.exports = { recordCancelPayment };

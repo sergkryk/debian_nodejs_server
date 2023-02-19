@@ -13,8 +13,9 @@ async function add(uid, amount) {
   );
   if (response.length > 0) {
     return checkResponse(response[0]);
+  } else {
+    return false;
   }
-  return false;
 }
 
 async function substract(uid, amount) {
@@ -25,8 +26,9 @@ async function substract(uid, amount) {
   );
   if (response.length > 0) {
     return checkResponse(response[0]);
+  } else {
+    return false;
   }
-  return false;
 }
 
 module.exports = { add, substract };
