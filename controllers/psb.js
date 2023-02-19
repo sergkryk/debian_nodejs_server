@@ -8,7 +8,8 @@ const fetchUid = require("../models/psb_uid.js");
 const sendPay = require("../models/psb_payment.js");
 const cancelPay = require("../models/psb_payment_cancel.js");
 const findPay = require("../models/psb_payment_find.js");
-const updateUserBill = require("../models/psb_bills.js");
+const Bill = require("../models/psb_bills.js");
+const Actions = require("../models/psb_admin_actions.js");
 
 class QueryController {
   constructor(args) {
@@ -60,8 +61,14 @@ class QueryController {
     const data = await fetchName(this.uid);
     this.fio = data.fio;
   }
-  async updateBill() {
-    this.isUserBillUpdated = await updateUserBill(this.uid, this.Amount);
+  async addSum() {
+    this.isPaid = await Bill.add(this.uid, this.Amount);
+  }
+  async substractSum() {
+    this.isSubstracted = await Bill.substract(this.uid, this.Amount);
+  }
+  async logTransactionCancel() {
+    await Actions.recordCancelPayment(this.uid, this.TransactionId, '127.0.0.1');
   }
   sendXmlResponse() {
     const responses = {
@@ -113,15 +120,14 @@ class QueryController {
       await this.verifyDisable();
       await this.isUnique();
       await this.sendTransaction();
-      await this.updateBill();
-      if (this.isUserBillUpdated) {
+      await this.addSum();
+      if (this.isPaid) {
         this.resultCode = codes.ok;
         return this.sendXmlResponse();
       }
-      throw new Error();
+      throw new Error("Failed to process payment!");
     } catch (error) {
       console.log(error);
-      await this.cancelTransaction();
       return this.sendXmlResponse();
     }
   }
@@ -131,10 +137,14 @@ class QueryController {
       this.transactionToCancel = await this.findTransaction();
       if (this.transactionToCancel) {
         await this.cancelTransaction();
-        this.resultCode = codes.ok;
-        return this.sendXmlResponse();
+        await this.substractSum();
+        if (this.isSubstracted) {
+          await this.logTransactionCancel();
+          this.resultCode = codes.ok;
+          return this.sendXmlResponse();
+        }
       }
-      throw new Error('Transaction not found!');
+      throw new Error("Failed to cancel payment!");
     } catch (error) {
       this.resultCode = codes.forbidden;
       console.log(error);
