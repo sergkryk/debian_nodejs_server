@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 
 const controller = require("../controllers/psb_report");
-// const reqVerification = require("../middleware/reqVerification.js");
+const verifyReportReq = require("../middleware/reportReqVerification.js");
 
-// router.use(reqVerification);
+router.use(verifyReportReq);
 
 router.get("/", controller);
 
