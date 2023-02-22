@@ -5,7 +5,7 @@ GET https://chernuhino.online:8443/psb?QueryType=pay&TransactionId=160&Transacti
 
 
 ###
-GET https://chernuhino.online:8443/paydayreport?CheckDateBegin=20230219190000&CheckDateEnd=20230221235959
+GET https://chernuhino.online:8443/paydayreport?CheckDateBegin=20230219190000&CheckDateEnd=20230222235959
 
 ###
 # POST https://billing.asknet.online:9000/login
