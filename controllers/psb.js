@@ -1,7 +1,6 @@
 const xml = require("xml");
 
 const codes = require("../config/resultCodes.js");
-const psbIp = require("../config/psb_ip.js");
 
 const fetchDisable = require("../models/psb_disable.js");
 const isUnique = require("../models/psb_unique.js");
