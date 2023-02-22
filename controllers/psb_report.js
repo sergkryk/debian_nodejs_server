@@ -1,6 +1,5 @@
 const xml = require("xml");
 
-const reqIp = require("../config/psb_ip.js");
 const Report = require('../models/psb_report');
 
 class QueryController {
@@ -19,7 +18,7 @@ class QueryController {
   }
   async response() {
     try {
-      this.items = await Report.find(this.CheckDateBegin, this.CheckDateEnd, this.reqIp);
+      this.items = await Report.find(this.CheckDateBegin, this.CheckDateEnd, this.address);
       if (this.items.length > 0) {
         return this.sendXmlResponse();
       }
