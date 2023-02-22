@@ -14,6 +14,7 @@ function getXml(item) {
 }
 
 async function find(start, end, ip) {
+  console.log(ip);
   const data = await pool.execute(
     `SELECT p.ext_id as TransactionId, u.id as Account, p.dsc as TransactionDate, p.sum as Amount FROM payments p INNER JOIN users u ON u.uid = p.uid WHERE ip = INET_ATON('${ip}') AND date BETWEEN TIMESTAMP(${start}) AND TIMESTAMP(${end})`
   );
