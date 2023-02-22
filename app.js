@@ -4,9 +4,13 @@ const express = require("express");
 const https = require("https");
 const fs = require("fs");
 
+// middleware
+const setReqIp = require("./middleware/setReqIp");
+
 //routes
 const psbRouter = require("./routes/psb");
 const psbReportRouter = require("./routes/psb_report");
+const postOfficeRouter = require("./routes/postoffice");
 
 const PORT = 8443;
 const INTERFACE = "195.158.222.116";
@@ -24,11 +28,13 @@ const options = {
 const app = express();
 // app.use(express.static('static'));
 // app.use(reqVerification)
+app.use(setReqIp);
 
 app.use("/psb", psbRouter);
 app.use("/paydayreport", psbReportRouter);
+app.use("/postoffice", postOfficeRouter);
 
-// http сервер
+// // http сервер
 // app.listen(PORT, INTERFACE, () => {
 //   console.log(`The server started on ${INTERFACE} port ${PORT}`);
 // });

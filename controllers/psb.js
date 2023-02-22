@@ -18,7 +18,6 @@ class QueryController {
     for (let key in args) {
       this[key] = args[key];
     }
-    this.reqIp = psbIp;
     this.resultCode = codes.other;
     this.comment = "";
     this.fio = "";
@@ -32,7 +31,8 @@ class QueryController {
       this.TransactionId,
       this.TransactionDate,
       this.Amount,
-      this.reqIp,
+      this.address,
+      this.providerId,
     );
   }
   async findTransaction() {
@@ -71,7 +71,7 @@ class QueryController {
     this.isSubstracted = await Bill.substract(this.uid, this.Amount);
   }
   async logTransactionCancel() {
-    await Actions.recordCancelPayment(this.uid, this.TransactionId, this.reqIp);
+    await Actions.recordCancelPayment(this.uid, this.TransactionId, this.address);
   }
   sendXmlResponse() {
     const responses = {

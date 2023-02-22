@@ -11,7 +11,7 @@ async function recordCancelPayment(uid, transactionId, ip) {
       action_type
     )
     VALUES (
-      'PSB Transaction ${transactionId} canceled',
+      'Transaction ${transactionId} canceled',
       NOW(),
       INET_ATON('${ip}'),
       ${uid},

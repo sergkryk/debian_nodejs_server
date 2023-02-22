@@ -1,5 +1,5 @@
 const pool = require("../utils/db");
-async function sendPay(uid, transactionId, transactionDate, amount, ip) {
+async function sendPay(uid, transactionId, transactionDate, amount, ip, method) {
   // создаём запись об оплате в таблице payments //
   const payRes = await pool.execute(
     `INSERT INTO payments (
@@ -24,7 +24,7 @@ async function sendPay(uid, transactionId, transactionDate, amount, ip) {
         (SELECT deposit FROM bills WHERE uid = ${uid}),
         ${uid},
         3,
-        1,
+        ${method},
         '${transactionId}',
         (SELECT id FROM bills WHERE uid = ${uid}),
         '',
