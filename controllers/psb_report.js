@@ -7,7 +7,6 @@ class QueryController {
     for (let key in args) {
       this[key] = args[key];
     }
-    this.reqIp = reqIp;
   }
 
   sendXmlResponse() {
