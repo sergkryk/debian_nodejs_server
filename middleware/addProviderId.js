@@ -1,6 +1,7 @@
 const payments = {
   post: '3',
-  psb: '1'
+  psb: '1',
+  dealer: '3'
 }
 
 function post(req, res, next) {
@@ -13,6 +14,11 @@ function psb(req, res, next) {
   next();
 }
 
+function dealer(req, res, next) {
+  req.query.providerId = payments.dealer;
+  next();
+}
 
 
-module.exports = { post, psb };
+
+module.exports = { post, psb, dealer };

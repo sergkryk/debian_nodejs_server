@@ -1,33 +1,16 @@
-// const pool = require("../utils/db");
+const pool = require("../utils/db");
+const { processResponse } = require("../utils/dbValidation");
 
-// async function fetchAllMonthly() {
-//   const response = await pool.execute(
-//     `SELECT id FROM tarif_plans WHERE month_fee > 0`
-//   );
-//   if (response && response.length > 0) {
-//     const data = response[0];
-//     return data;
-//   }
-// }
+async function fetchByUid(uid) {
+  const response = await pool.execute(`SELECT * FROM users WHERE uid = ${uid}`);
+  const data = processResponse(response);
+  return data;
+}
 
-// async function fetchByUid(id) {
-//   const response = await pool.execute(
-//     `SELECT * FROM tarif_plans WHERE id = ${id}`
-//   );
-//   if (response && response.length > 0) {
-//     const data = response[0];
-//     return data;
-//   }
-// }
+async function fetchByLogin(login) {
+  const response = await pool.execute(`SELECT * FROM users WHERE id = 'user_${login}'`);
+  const data = processResponse(response);
+  return data;
+}
 
-// async function fetchUsersByPlan(id) {
-//   const response = await pool.execute(
-//     `SELECT uid FROM dv_main WHERE tp_id = ${id}`
-//   );
-//   if (response && response.length > 0) {
-//     const data = response[0];
-//     return data;
-//   }
-// }
-
-// module.exports = { fetchAllMonthly, fetchById, fetchUsersByPlan };
+module.exports = { fetchByUid, fetchByLogin };

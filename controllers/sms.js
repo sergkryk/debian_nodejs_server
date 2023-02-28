@@ -1,10 +1,8 @@
-const sms = require("../utils/sms");
-
 const TarifModel = require("../models/tarifs");
 const BillsModel = require("../models/bills");
 const PiModel = require("../models/pi");
-
-const chunkSize = 25;
+const UserModel = require("../models/user");
+const sms = require("../utils/sms");
 
 // вспомогательная функция для проверки телефона
 function validatePhone(el) {
@@ -23,68 +21,79 @@ function getDate() {
   return new Date(milliseconds).toLocaleDateString("ru-RU");
 }
 
-// вспомогательная функция деления массива на чанки
-function chunkArray(myArray, chunk_size) {
-  const tempArray = [];
-
-  for (let i = 0; i < myArray.length; i += chunk_size) {
-    myChunk = myArray.slice(i, i + chunk_size);
-    tempArray.push(myChunk);
-  }
-  return tempArray;
+// вспомогательная функция для генерации текста смс
+function getSmsBody(date, account, sum) {
+  return `Напоминаем, что ${date} на л/с ${account} спишется ${sum} руб. за интернет.`;
 }
 
-async function reminder(tp_ip) {
-  const numbers = [];
+// вспомогательная функция для преобразования логина в лицевой счёт
+function getAccount(login) {
+  const exp = /\d{4}/;
+  const match = login.match(exp);
+  if (match) {
+    return match[0];
+  } else {
+    return "";
+  }
+}
+
+async function reminder(tp_id) {
   // получаю обьект с текущим тарифом т.к. мне нужна сумма платежа для сравнения с депозитом пользователя
-  const tarif = await TarifModel.fetchById(tp_ip);
-  // получаю массив с вложенными массивами уидов абонентов по каждому ежемесячному тарифу
-  const uidLists = await TarifModel.fetchUsersByTarif(tp_ip);
-  // запускаю цикл внутри цикла (знаю это плохо) в котором обрабатываю полученные уиды абонентов
+  const { month_fee: monthFee } = await TarifModel.fetchById(tp_id);
+  // получаю список уидов абонентов на этом тарифе
+  const uidLists = await TarifModel.fetchUsersByTarif(tp_id);
+  // запускаю цикл в котором обрабатываю полученные уиды абонентов
   for (let i = 0; i < uidLists.length; i++) {
-    // получаю счёт пользователя с его депозитом
-    const userBill = await BillsModel.fetchByUid(uidLists[i].uid);
-    // сравниваю депозит с нулём и ежемесячной оплатой чтобы отфильтровать отключенных и тех, кто уже оплатил
-    if (userBill[0].deposit > 0 && userBill[0].deposit < tarif[0].month_fee) {
-      // получаю номер телефона абонента
-      const phone = await PiModel.fetchPhone(userBill[0].uid);
-      // валидирую номер на совпадение с маской
-      const validated = validatePhone(phone[0].phone);
-      // если номер валиден значит могу отправить абоненту смс с предупреждением, добавляю номер в список для дальнейшей отправки
-      if (validated && validated[0]) {
-        const number = `7959${validated[0].slice(validated[0].length - 7)}`;
-        numbers.push(number);
+    try {
+      // создаю переменную с uid пользователя
+      const uid = uidLists[i].uid;
+      // получаю счёт пользователя с его депозитом
+      const { deposit } = await BillsModel.fetchByUid(uid);
+      // получаю аккаунт пользователя
+      const { id: account } = await UserModel.fetchByUid(uid);
+      // сравниваю депозит с нулём и ежемесячной оплатой чтобы отфильтровать отключенных и тех, кто уже оплатил
+      if (deposit > 0 && deposit < monthFee) {
+        // получаю номер телефона абонента
+        const phone = await PiModel.fetchPhone(uid);
+        // валидирую номер по маске
+        const validated = validatePhone(phone[0].phone);
+        // если номер валиден значит могу отправить абоненту смс с предупреждением
+        if (validated && validated[0]) {
+          sms.single({
+            message: getSmsBody(getDate(), getAccount(account), monthFee),
+            number: `7959${validated[0].slice(validated[0].length - 7)}`,
+            // isTest: false,
+          });
+        }
       }
+    } catch (error) {
+      console.log(error.message);
     }
   }
-  return numbers;
 }
 
 // функция для ежемесячной отправки смс
 async function monthlyReminder() {
-  const message = `Обратите внимание! ${getDate()} списание абонентской платы за интернет.`;
-
   // получаю список содержащий айди тарифных планов с ежемесячной оплатой
-  const tarifsIds = await TarifModel.fetchAllMonthly();
+  // const tarifsIds = await TarifModel.fetchAllMonthly();
 
-  for (let i = 0; i < tarifsIds.length; i++) {
-    const numbers = await reminder(tarifsIds[i].id);
-    const chunkedNumbers = chunkArray(numbers, chunkSize);
+    // ОПОВЕЩЕНИЕ ОТПРАВЛЕНО 26.02.2023
+  // const prostoy = await reminder(4);
 
-    // использую библиотеку от sms.ru отправляю смс всем абонентам с предупреждением
-    for (let i = 0; i < chunkedNumbers.length; i++) {
-    //   sms.sms_send(
-    //     {
-    //       to: chunkedNumbers[i].toString(),
-    //       text: message,
-    //       test: true,
-    //     },
-    //     function (e) {
-    //       console.log(e);
-    //     }
-    //   );
-    }
-  }
+  // ОПОВЕЩЕНИЕ ОТПРАВЛЕНО 26.02.2023
+  // const optimal5 = await reminder(8);
+
+  // ОПОВЕЩЕНИЕ ОТПРАВЛЕНО 26.02.2023
+  // const optimal10 = await reminder(9);
+
+  // ОПОВЕЩЕНИЕ ОТПРАВЛЕНО 26.02.2023
+  // const optimal30 = await reminder(15);
+
+  // ОПОВЕЩЕНИЕ ОТПРАВЛЕНО 26.02.2023
+  // const optimal50 = await reminder(16);
+
+  // ОПОВЕЩЕНИЕ ОТПРАВЛЕНО 26.02.2023
+  // const optimal100 = await reminder(17);
 }
 
 module.exports = { monthlyReminder };

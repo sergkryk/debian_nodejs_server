@@ -1,16 +1,22 @@
 const xml = require("xml");
 
 const codes = require("../config/resultCodes.js");
+const COUNTRY_CODE = '7959';
 
-const fetchDisable = require("../models/psb_disable.js");
 const isUnique = require("../models/psb_unique.js");
-const fetchName = require("../models/psb_fio.js");
-const fetchUid = require("../models/psb_uid.js");
 const sendPay = require("../models/psb_payment.js");
 const cancelPay = require("../models/psb_payment_cancel.js");
 const findPay = require("../models/psb_payment_find.js");
 const Bill = require("../models/psb_bills.js");
 const Actions = require("../models/psb_admin_actions.js");
+
+const UserModel = require("../models/user.js");
+const UserPiModel = require("../models/userPi.js");
+const BillsModel = require("../models/bills.js");
+
+const validator = require("../utils/validators.js");
+const messages = require("../utils/sms");
+const messageTemplates = require("../utils/messageTemplates.js");
 
 class QueryController {
   constructor(args) {
@@ -20,6 +26,7 @@ class QueryController {
     this.resultCode = codes.other;
     this.comment = "";
     this.fio = "";
+    this.isPaid = true;
   }
   async cancelTransaction() {
     await cancelPay(this.TransactionId);
@@ -31,14 +38,13 @@ class QueryController {
       this.TransactionDate,
       this.Amount,
       this.address,
-      this.providerId,
+      this.providerId
     );
   }
   async findTransaction() {
     return await findPay(this.uid, this.TransactionId, this.Amount);
   }
   async verifyDisable() {
-    this.disable = await fetchDisable(this.uid);
     if (this.disable === 1) {
       this.resultCode = codes.acc_disabled;
       throw new Error();
@@ -52,16 +58,20 @@ class QueryController {
     }
   }
   async verifyUid() {
-    const data = await fetchUid(this.Account);
-    if (typeof data !== "object") {
+    try {
+      let { uid, disable } = await UserModel.fetchByLogin(this.Account);
+      Object.assign(this, { uid, disable });
+    } catch (error) {
       this.resultCode = codes.not_found;
-      throw new Error();
     }
-    this.uid = data.uid;
+  }
+  async fetchDeposit() {
+    let { deposit } = await BillsModel.fetchByUid(this.uid);
+    Object.assign(this, { deposit });
   }
   async fetchPi() {
-    const data = await fetchName(this.uid);
-    this.fio = data.fio;
+    let { fio, phone } = await UserPiModel.fetchByUid(this.uid);
+    Object.assign(this, { fio, phone });
   }
   async addSum() {
     this.isPaid = await Bill.add(this.uid, this.Amount);
@@ -70,7 +80,11 @@ class QueryController {
     this.isSubstracted = await Bill.substract(this.uid, this.Amount);
   }
   async logTransactionCancel() {
-    await Actions.recordCancelPayment(this.uid, this.TransactionId, this.address);
+    await Actions.recordCancelPayment(
+      this.uid,
+      this.TransactionId,
+      this.address
+    );
   }
   sendXmlResponse() {
     const responses = {
@@ -121,9 +135,18 @@ class QueryController {
       await this.fetchPi();
       await this.verifyDisable();
       await this.isUnique();
-      await this.sendTransaction();
-      await this.addSum();
+      // await this.sendTransaction();
+      // await this.addSum();
+      await this.fetchDeposit();
+      // console.log(this);
+      // console.log(validator.validatePhone(this.phone));
       if (this.isPaid) {
+        if (validator.validatePhone(this.phone)) {
+          messages.single({
+            number: `${COUNTRY_CODE}${this.phone}`,
+            message: messageTemplates.paid(this.Account, this.Amount, this.deposit),
+          })
+        }
         this.resultCode = codes.ok;
         return this.sendXmlResponse();
       } else {
