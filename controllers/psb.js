@@ -31,6 +31,7 @@ class QueryController {
     if (disable === 1) {
       errorHandler({ code: codes.acc_disabled });
     }
+
     let transaction = await Pays.fetchByExId(args.TransactionId);
     if (transaction.hasOwnProperty("id") && args.QueryType !== "cancel") {
       errorHandler({ code: codes.not_finished });
@@ -39,6 +40,7 @@ class QueryController {
       errorHandler({ code: codes.not_found });
     }
     args.transaction = transaction;
+
     let { fio = "", phone = "" } = await UserPi.fetchByUid(uid);
     if (phone.toString().match(/^72\d{7}$/)) {
       phone = renderPhoneNumber(phone);
@@ -150,6 +152,9 @@ class QueryController {
     return this.sendXmlResponse();
   }
   async cancel() {
+    if (this.transaction.sum !== Number(this.Amount) || this.user.uid !== this.transaction.uid) {
+      errorHandler({code: codes.not_found})
+    }
     await this.getUserDeposit();
     this.user.deposit =
       Number(this.user.deposit) - Number(this.transaction.sum);
