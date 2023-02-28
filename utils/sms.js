@@ -27,7 +27,7 @@ function single(options) {
       test: isTest,
     },
     function (e) {
-      console.log(e);
+      // console.log(e);
     }
   );
 }

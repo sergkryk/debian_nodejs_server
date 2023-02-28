@@ -1,8 +1,13 @@
-GET http://127.0.0.1:3000/dealer?QueryType=pay&TransactionId=160&TransactionDate=20230219130000&Account=1007&Amount=10.00
+GET http://127.0.0.1:3000/dealer?QueryType=check&TransactionId=185&TransactionDate=20230219130000&Account=1107&Amount=10.00
 
 ###
-GET https://chernuhino.online:8443/psb?QueryType=pay&TransactionId=160&TransactionDate=20230219130000&Account=1308&Amount=10.00
+GET http://127.0.0.1:3000/dealer?QueryType=pay&TransactionId=165&TransactionDate=20230219130000&Account=1007&Amount=10.40
 
+###
+GET http://127.0.0.1:3000/dealer?QueryType=cancel&TransactionId=174&TransactionDate=20230219130000&Account=1007&Amount=10.00
+
+###
+GET http://127.0.0.1:3000/dealer?QueryType=pay&TransactionId=0&TransactionDate=20230219130000&Account=1541&Amount=550.00
 
 ###
 GET https://chernuhino.online:8443/paydayreport?CheckDateBegin=20230219190000&CheckDateEnd=20230222235959

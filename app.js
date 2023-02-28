@@ -23,6 +23,9 @@ const psbReportRouter = require("./routes/psb_report");
 const postOfficeRouter = require("./routes/postoffice");
 const dealerRouter = require("./routes/dealer");
 
+
+const main = require("./config/test_post_payment");
+
 // const PORT = 8443;
 // const INTERFACE = "195.158.222.116";
 const PORT = 3000;
@@ -49,6 +52,7 @@ app.use("/dealer", dealerRouter);
 // // http сервер
 app.listen(PORT, INTERFACE, () => {
   console.log(`The server started on ${INTERFACE} port ${PORT}`);
+  // main();
 });
 
 // https сервер
@@ -56,3 +60,5 @@ app.listen(PORT, INTERFACE, () => {
 // server.listen(PORT, INTERFACE, () => {
   // console.log(`The server started on ${INTERFACE} port ${PORT}`);
 // });
+
+

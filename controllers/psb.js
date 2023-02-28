@@ -1,90 +1,108 @@
 const xml = require("xml");
 
 const codes = require("../config/resultCodes.js");
-const COUNTRY_CODE = '7959';
-
-const isUnique = require("../models/psb_unique.js");
-const sendPay = require("../models/psb_payment.js");
-const cancelPay = require("../models/psb_payment_cancel.js");
-const findPay = require("../models/psb_payment_find.js");
-const Bill = require("../models/psb_bills.js");
-const Actions = require("../models/psb_admin_actions.js");
-
-const UserModel = require("../models/user.js");
-const UserPiModel = require("../models/userPi.js");
-const BillsModel = require("../models/bills.js");
-
-const validator = require("../utils/validators.js");
+const renderPhoneNumber = require("../utils/renderPhoneNumber.js");
+const xmlResponse = require("../utils/xml.js");
+const errorHandler = require("../utils/errorHandler.js");
 const messages = require("../utils/sms");
 const messageTemplates = require("../utils/messageTemplates.js");
+
+// модели для работы с базой данных
+const User = require("../models/users.js");
+const UserPi = require("../models/users_pi.js");
+const Bills = require("../models/bills.js");
+const Pays = require("../models/payments.js");
+const Actions = require("../models/admin_actions.js");
+
 
 class QueryController {
   constructor(args) {
     for (let key in args) {
       this[key] = args[key];
     }
-    this.resultCode = codes.other;
-    this.comment = "";
-    this.fio = "";
-    this.isPaid = true;
   }
-  async cancelTransaction() {
-    await cancelPay(this.TransactionId);
+  static async initialize(args) {
+    const { uid = "", disable = "" } = await User.fetchByLogin(
+      args.Account
+    );
+    if (!uid) {
+      errorHandler({ code: codes.not_found });
+    }
+    if (disable === 1) {
+      errorHandler({ code: codes.acc_disabled });
+    }
+    let transaction = await Pays.fetchByExId(args.TransactionId);
+    if (transaction.hasOwnProperty("id") && args.QueryType !== "cancel") {
+      errorHandler({ code: codes.not_finished });
+    }
+    if (!transaction.hasOwnProperty("id") && args.QueryType === "cancel") {
+      errorHandler({ code: codes.not_found });
+    }
+    args.transaction = transaction;
+    let { fio = "", phone = "" } = await UserPi.fetchByUid(uid);
+    if (phone.toString().match(/^72\d{7}$/)) {
+      phone = renderPhoneNumber(phone);
+    } else {
+      phone = "";
+    }
+    args.resultCode = codes.other;
+    args.user = { uid, disable, fio, phone };
+    return new QueryController(args);
   }
-  async sendTransaction() {
-    this.payId = await sendPay(
-      this.uid,
+  async delPaymentRecord() {
+    const response = await Pays.removePay(this.TransactionId);
+    if (!response.hasOwnProperty("affectedRows")) {
+      errorHandler({ code: codes.other });
+    }
+  }
+  async addPaymentRecord() {
+    const response = await Pays.addPay(
+      this.user.uid,
       this.TransactionId,
       this.TransactionDate,
       this.Amount,
       this.address,
       this.providerId
     );
+    if (response.hasOwnProperty("insertId")) {
+      this.TransactionExt = response.insertId;
+      return;
+    }
+    errorHandler({ code: codes.other });
   }
-  async findTransaction() {
-    return await findPay(this.uid, this.TransactionId, this.Amount);
-  }
-  async verifyDisable() {
-    if (this.disable === 1) {
-      this.resultCode = codes.acc_disabled;
-      throw new Error();
+  async getUserDeposit() {
+    let { deposit } = await Bills.fetchByUid(this.user.uid);
+    if (!typeof deposit === "number") {
+      errorHandler({ code: codes.other });
+    } else {
+      this.user.deposit = deposit;
     }
   }
-  async isUnique() {
-    this.isUnique = await isUnique(this.TransactionId);
-    if (!this.isUnique) {
-      this.resultCode = codes.not_finished;
-      throw new Error();
+  async updateUserDeposit() {
+    const response = await Bills.update(this.user.uid, this.user.deposit);
+    let { changeRows = "", warningStatus = "" } = response;
+    if (changeRows !== 1 && warningStatus !== 0) {
+      errorHandler({ code: codes.other });
     }
   }
-  async verifyUid() {
-    try {
-      let { uid, disable } = await UserModel.fetchByLogin(this.Account);
-      Object.assign(this, { uid, disable });
-    } catch (error) {
-      this.resultCode = codes.not_found;
-    }
+  async informUserViaSms() {
+    messages.single({
+      number: this.user.phone,
+      message: messageTemplates.paid(
+        this.Account,
+        this.Amount,
+        this.user.deposit
+      ),
+      // isTest: false,
+    });
   }
-  async fetchDeposit() {
-    let { deposit } = await BillsModel.fetchByUid(this.uid);
-    Object.assign(this, { deposit });
-  }
-  async fetchPi() {
-    let { fio, phone } = await UserPiModel.fetchByUid(this.uid);
-    Object.assign(this, { fio, phone });
-  }
-  async addSum() {
-    this.isPaid = await Bill.add(this.uid, this.Amount);
-  }
-  async substractSum() {
-    this.isSubstracted = await Bill.substract(this.uid, this.Amount);
-  }
-  async logTransactionCancel() {
-    await Actions.recordCancelPayment(
-      this.uid,
+  async addActionsRecord() {
+    const response = await Actions.logAction(
+      this.user.uid,
       this.TransactionId,
       this.address
     );
+    console.log(response);
   }
   sendXmlResponse() {
     const responses = {
@@ -92,14 +110,15 @@ class QueryController {
         Response: [
           { TransactionId: this.TransactionId },
           { ResultCode: this.resultCode },
-          { Fields: [{ field1: [{ _attr: { name: "name" } }, this.fio] }] },
-          { Comment: this.comment },
+          {
+            Fields: [{ field1: [{ _attr: { name: "name" } }, this.user.fio] }],
+          },
         ],
       },
       pay: {
         Response: [
           { TransactionId: this.TransactionId },
-          { TransactionExt: this.payId },
+          { TransactionExt: this.TransactionExt },
           { Amount: this.Amount },
           { ResultCode: this.resultCode },
           { Comment: this.comment },
@@ -108,7 +127,7 @@ class QueryController {
       cancel: {
         Response: [
           { TransactionId: this.TransactionId },
-          { TransactionExt: this.transactionToCancel },
+          { TransactionExt: this.transaction.id },
           { Amount: this.Amount },
           { ResultCode: this.resultCode },
           { Comment: this.comment },
@@ -118,73 +137,41 @@ class QueryController {
     return xml(responses[this.QueryType], { declaration: true });
   }
   async check() {
-    try {
-      await this.verifyUid();
-      await this.fetchPi();
-      await this.verifyDisable();
-      this.resultCode = codes.ok;
-      return this.sendXmlResponse();
-    } catch (error) {
-      console.log(error);
-      return this.sendXmlResponse();
-    }
+    this.resultCode = codes.ok;
+    return this.sendXmlResponse();
   }
   async pay() {
-    try {
-      await this.verifyUid();
-      await this.fetchPi();
-      await this.verifyDisable();
-      await this.isUnique();
-      // await this.sendTransaction();
-      // await this.addSum();
-      await this.fetchDeposit();
-      // console.log(this);
-      // console.log(validator.validatePhone(this.phone));
-      if (this.isPaid) {
-        if (validator.validatePhone(this.phone)) {
-          messages.single({
-            number: `${COUNTRY_CODE}${this.phone}`,
-            message: messageTemplates.paid(this.Account, this.Amount, this.deposit),
-          })
-        }
-        this.resultCode = codes.ok;
-        return this.sendXmlResponse();
-      } else {
-        throw new Error("Failed to process payment!");
-      }
-    } catch (error) {
-      console.log(error);
-      return this.sendXmlResponse();
-    }
+    await this.getUserDeposit();
+    this.user.deposit = Number(this.user.deposit) + Number(this.Amount);
+    await this.addPaymentRecord();
+    await this.updateUserDeposit();
+    await this.informUserViaSms();
+    this.resultCode = codes.ok;
+    return this.sendXmlResponse();
   }
   async cancel() {
-    try {
-      await this.verifyUid();
-      this.transactionToCancel = await this.findTransaction();
-      if (this.transactionToCancel) {
-        await this.cancelTransaction();
-        await this.substractSum();
-        if (this.isSubstracted) {
-          await this.logTransactionCancel();
-          this.resultCode = codes.ok;
-          return this.sendXmlResponse();
-        }
-      }
-      throw new Error("Failed to cancel payment!");
-    } catch (error) {
-      this.resultCode = codes.forbidden;
-      console.log(error);
-      return this.sendXmlResponse();
-    }
+    await this.getUserDeposit();
+    this.user.deposit =
+      Number(this.user.deposit) - Number(this.transaction.sum);
+    await this.delPaymentRecord();
+    await this.updateUserDeposit();
+    await this.addActionsRecord();
+    this.resultCode = codes.ok;
+    return this.sendXmlResponse();
   }
 }
 
 async function init(req, res) {
-  const controller = new QueryController(req.query);
-  const data = await controller[req.query.QueryType]();
   res.set("Content-Type", "text/xml");
-  res.send(data);
-  return;
+  try {
+    const controller = await QueryController.initialize(req.query);
+    const data = await controller[req.query.QueryType]();
+    res.send(data);
+    return;
+  } catch (error) {
+    res.send(xmlResponse(error.code));
+    console.log(error.message);
+  }
 }
 
 module.exports = init;

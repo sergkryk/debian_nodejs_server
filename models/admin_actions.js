@@ -1,6 +1,7 @@
 const pool = require("../utils/db");
+const { processResponse } = require("../utils/dbValidation");
 
-async function recordCancelPayment(uid, transactionId, ip) {
+async function logAction(uid, transactionId, ip) {
   const response = await pool.execute(
     `INSERT INTO admin_actions (
       actions,
@@ -19,6 +20,8 @@ async function recordCancelPayment(uid, transactionId, ip) {
       10
     );`
   );
+  const data = processResponse(response);
+  return data;
 }
 
-module.exports = { recordCancelPayment };
+module.exports = { logAction };
