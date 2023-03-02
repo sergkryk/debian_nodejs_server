@@ -1,14 +1,5 @@
-
-
-
-
-
-
-
-
-
-
 const express = require("express");
+const { exec } = require('child_process');
 
 // https сервер
 // const https = require("https");
@@ -60,5 +51,3 @@ app.listen(PORT, INTERFACE, () => {
 // server.listen(PORT, INTERFACE, () => {
   // console.log(`The server started on ${INTERFACE} port ${PORT}`);
 // });
-
-

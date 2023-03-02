@@ -1,10 +1,13 @@
 GET http://127.0.0.1:3000/dealer?QueryType=check&TransactionId=185&TransactionDate=20230219130000&Account=1107&Amount=10.00
 
 ###
-GET http://127.0.0.1:3000/dealer?QueryType=pay&TransactionId=165&TransactionDate=20230219130000&Account=1007&Amount=10.40
+GET http://127.0.0.1:3000/dealer?QueryType=pay&TransactionId=010320230&TransactionDate=20230219130000&Account=${el.acc}&Amount=${el.sum}
 
 ###
-GET http://127.0.0.1:3000/dealer?QueryType=cancel&TransactionId=174&TransactionDate=20230219130000&Account=1007&Amount=10.00
+GET http://127.0.0.1:3000/dealer?QueryType=pay&TransactionId=185&TransactionDate=20230219130000&Account=1107&Amount=104.00
+
+###
+GET http://127.0.0.1:3000/dealer?QueryType=cancel&TransactionId=185&TransactionDate=20230219130000&Account=1107&Amount=104.00
 
 ###
 GET http://127.0.0.1:3000/dealer?QueryType=pay&TransactionId=0&TransactionDate=20230219130000&Account=1541&Amount=550.00
