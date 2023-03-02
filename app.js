@@ -43,7 +43,7 @@ app.use("/dealer", dealerRouter);
 // // http сервер
 app.listen(PORT, INTERFACE, () => {
   console.log(`The server started on ${INTERFACE} port ${PORT}`);
-  // main();
+  // tempPostPaymentProscessing();
 });
 
 // https сервер

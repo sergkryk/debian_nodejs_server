@@ -1,7 +1,9 @@
 const axios = require("axios");
 
-function main() {
+function tempPostPaymentProscessing() {
   const now = new Date();
+
+  // в массиве должны лежать обьекты в формате {acc: 'login', sum: '10.00'} login - четыре цифры из логина пользователя
   const payments = [];
 
   payments.forEach((el, index) => {
@@ -24,4 +26,4 @@ function main() {
   });
 }
 
-module.exports = main;
+module.exports = tempPostPaymentProscessing;
