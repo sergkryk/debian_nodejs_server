@@ -1,5 +1,6 @@
 const express = require("express");
-const { exec } = require('child_process');
+const bodyParser = require('body-parser');
+const path = require("path");
 
 // https сервер
 // const https = require("https");
@@ -13,6 +14,7 @@ const psbRouter = require("./routes/psb");
 const psbReportRouter = require("./routes/psb_report");
 const postOfficeRouter = require("./routes/postoffice");
 const dealerRouter = require("./routes/dealer");
+const webPayRouter = require("./routes/webPay");
 
 
 const main = require("./config/test_post_payment");
@@ -31,14 +33,26 @@ const INTERFACE = "127.0.0.1";
 // };
 
 const app = express();
+
+app.set("view engine", "pug");
+app.set("views", "./views");
+
+app.use(bodyParser.json());
+
 // app.use(express.static('static'));
 // app.use(reqVerification)
+app.use("/webpay", webPayRouter);
+
 app.use(setReqIp);
 
 app.use("/psb", psbRouter);
 app.use("/paydayreport", psbReportRouter);
 app.use("/postoffice", postOfficeRouter);
 app.use("/dealer", dealerRouter);
+
+app.use("/", (req,res,next) => {
+  res.sendFile(path.join(__dirname, 'views', '404.html'));
+});
 
 // // http сервер
 app.listen(PORT, INTERFACE, () => {
