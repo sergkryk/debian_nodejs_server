@@ -9,7 +9,7 @@ async function fetchByExId(ex_id) {
   return data;
 }
 
-async function addPay(uid, transactionId, transactionDate, amount, ip, method) {
+async function addPay(uid, transactionId, transactionDate, amount, ip, method, aid = 5) {
   const response = await pool.execute(
     `INSERT INTO payments (
         date,
@@ -33,7 +33,7 @@ async function addPay(uid, transactionId, transactionDate, amount, ip, method) {
         INET_ATON('${ip}'),
         (SELECT deposit FROM bills WHERE uid = ${uid}),
         ${uid},
-        5,
+        ${aid},
         ${method},
         '${transactionId}',
         (SELECT id FROM bills WHERE uid = ${uid}),

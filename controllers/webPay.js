@@ -6,37 +6,32 @@ const PaymentsModel = require("../models/payments");
 const address = require("../utils/address");
 
 async function check(req, res, next) {
-  if (req.query.account) {
-    const { account } = req.query;
-    const { uid } = await UserModel.fetchByLogin(account);
-    if (uid) {
-      const {
-        city,
-        fio,
-        address_street: street,
-        address_build: build,
-        address_flat: flat,
-      } = await UserPiModel.fetchByUid(uid);
-      const addressString = `${address.getCity(city)}, ${address.getStreet(
-        street
-      )}, ${address.getBuild(build, flat)}`;
-
-      res.render("pay", {
-        title: "Account",
-        uid,
-        account,
-        fio,
-        street: addressString,
-      });
-    } else {
-      res.render("check", { title: "Error", notFound: true });
-    }
-  } else {
+  if (!req.query.account) {
     res.render("check", { title: "Initial State", notFound: false });
+    return;
+  }
+  try {
+    const { uid } = await UserModel.fetchByLogin(req.query?.account);
+    if (!uid) {
+      throw new Error()
+    }
+    const { city, fio, address_street, address_build, address_flat } = await UserPiModel.fetchByUid(uid);
+    const addressString = `${address.getCity(city)}, ${address.getStreet(address_street)}, ${address.getBuild(address_build, address_flat)}`;
+
+    res.render("pay", {
+      title: "Account",
+      uid,
+      account: req.query?.account,
+      fio,
+      street: addressString,
+    });
+  } catch (error) {
+    res.render("check", { title: "Error", notFound: true });
   }
 }
 
 async function pay(req, res, next) {
+  const admin = req.body.admin;
   const { sum, address, uid, account } = req.body;
   const { deposit } = await BillsModel.fetchByUid(uid);
 
@@ -44,7 +39,7 @@ async function pay(req, res, next) {
   const response = await BillsModel.update(uid, updatedDeposit);
 
   if (response.changedRows == 1) {
-    await PaymentsModel.addPay(uid, "", "", sum, req.query.address, "0");
+    await PaymentsModel.addPay(uid, "", "", sum, req.query.address, "0", admin.aid);
     res.render("success", {
       sum: sum,
       account,

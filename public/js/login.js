@@ -15,18 +15,12 @@ function submitHandler(evt) {
   })
     .then((res) => {
       if (res.status === 200) {
-        return res.json();
+        window.location.replace('webpay');
+      }
+      if (res.status === 401) {
+        alert('Неверное имя пользователя или пароль!')
       }
     })
-    .then((res) => {
-      if (res.bearer) {
-        console.log(res);
-        // console.log(window.location.href);
-        // window.location.href = '';
-        window.location.replace('webpay');
-        // window.history.go(-1)
-      }
-    });
   evt.preventDefault();
 }
 

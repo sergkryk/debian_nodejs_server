@@ -7,7 +7,7 @@ const tokenVerification = function (req, res, next) {
     const cookies = parseCookies(req);
     if (cookies?.token) {
       const verified = jwt.verifyToken(cookies.token);
-      req.body.uid = verified.id;
+      req.body.admin = verified;
       next();
     } else {
       throw new Error();
