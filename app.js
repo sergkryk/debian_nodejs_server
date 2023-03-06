@@ -41,10 +41,10 @@ app.use(bodyParser.json());
 
 // app.use(express.static('static'));
 // app.use(reqVerification)
-app.use("/webpay", webPayRouter);
 
 app.use(setReqIp);
 
+app.use("/webpay", webPayRouter);
 app.use("/psb", psbRouter);
 app.use("/paydayreport", psbReportRouter);
 app.use("/postoffice", postOfficeRouter);

@@ -23,12 +23,13 @@ async function addPay(uid, transactionId, transactionDate, amount, ip, method) {
         ext_id,
         bill_id,
         inner_describe,
-        currency,amount
+        currency,
+        amount
         )
        VALUES (
         NOW(),
         '${amount}',
-        ${transactionDate},
+        '${transactionDate}',
         INET_ATON('${ip}'),
         (SELECT deposit FROM bills WHERE uid = ${uid}),
         ${uid},
@@ -46,7 +47,9 @@ async function addPay(uid, transactionId, transactionDate, amount, ip, method) {
 }
 
 async function removePay(transactionId) {
-  const response = await pool.execute(`DELETE FROM payments WHERE ext_id = ${transactionId}`);
+  const response = await pool.execute(
+    `DELETE FROM payments WHERE ext_id = ${transactionId}`
+  );
   const data = processResponse(response);
   return data;
 }

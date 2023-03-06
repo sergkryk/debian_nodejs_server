@@ -14,4 +14,6 @@ html(lang="en")
             label(for="account") Введите лицевой счёт пользователя
             input(type="text" id="account" name="account" placeholder="Введите лицевой счёт пользователя")
           button(type="submit") Проверить
+          if notFound
+            p Не найден
     footer
