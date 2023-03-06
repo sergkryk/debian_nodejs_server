@@ -10,9 +10,17 @@ async function check(req, res, next) {
     const { account } = req.query;
     const { uid } = await UserModel.fetchByLogin(account);
     if (uid) {
-      const { city, fio, address_street: street, address_build: build, address_flat: flat } = await UserPiModel.fetchByUid(uid);
-      const addressString = `${address.getCity(city)}, ${address.getStreet(street)}, ${address.getBuild(build, flat)}`;
-  
+      const {
+        city,
+        fio,
+        address_street: street,
+        address_build: build,
+        address_flat: flat,
+      } = await UserPiModel.fetchByUid(uid);
+      const addressString = `${address.getCity(city)}, ${address.getStreet(
+        street
+      )}, ${address.getBuild(build, flat)}`;
+
       res.render("pay", {
         title: "Account",
         uid,

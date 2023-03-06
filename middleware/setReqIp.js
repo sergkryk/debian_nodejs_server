@@ -3,7 +3,7 @@ function setReqIp(req, res, next) {
   if (ip) {
     req.query.address = ip;
   } else {
-    req.query.address = '';
+    req.query.address = "";
   }
   next();
 }

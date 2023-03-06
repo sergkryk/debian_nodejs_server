@@ -1,6 +1,9 @@
 const express = require("express");
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 const path = require("path");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 // https сервер
 // const https = require("https");
@@ -15,7 +18,7 @@ const psbReportRouter = require("./routes/psb_report");
 const postOfficeRouter = require("./routes/postoffice");
 const dealerRouter = require("./routes/dealer");
 const webPayRouter = require("./routes/webPay");
-
+const loginRouter = require("./routes/login");
 
 const main = require("./config/test_post_payment");
 
@@ -28,8 +31,8 @@ const INTERFACE = "127.0.0.1";
 // const hskey = fs.readFileSync("./sslcert/privkey.pem");
 // const hscert = fs.readFileSync("./sslcert/fullchain.pem");
 // const options = {
-  // key: hskey,
-  // cert: hscert,
+// key: hskey,
+// cert: hscert,
 // };
 
 const app = express();
@@ -38,21 +41,22 @@ app.set("view engine", "pug");
 app.set("views", "./views");
 
 app.use(bodyParser.json());
-
-// app.use(express.static('static'));
+app.use(express.static(path.join(__dirname, "public")));
+app.use(setReqIp);
 // app.use(reqVerification)
 
-app.use(setReqIp);
-
+// ROUTES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+app.use("/login", loginRouter);
 app.use("/webpay", webPayRouter);
 app.use("/psb", psbRouter);
 app.use("/paydayreport", psbReportRouter);
 app.use("/postoffice", postOfficeRouter);
 app.use("/dealer", dealerRouter);
 
-app.use("/", (req,res,next) => {
-  res.sendFile(path.join(__dirname, 'views', '404.html'));
+app.use("/", (req, res, next) => {
+  res.sendFile(path.join(__dirname, "views", "404.html"));
 });
+// END OF ROUTES +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // // http сервер
 app.listen(PORT, INTERFACE, () => {
@@ -63,5 +67,5 @@ app.listen(PORT, INTERFACE, () => {
 // https сервер
 // const server = https.createServer(options, app);
 // server.listen(PORT, INTERFACE, () => {
-  // console.log(`The server started on ${INTERFACE} port ${PORT}`);
+// console.log(`The server started on ${INTERFACE} port ${PORT}`);
 // });
