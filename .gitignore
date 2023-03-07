@@ -1,4 +1,6 @@
 .DS_Store
+sslcert
+database
 node_modules
 database
 sslcert
@@ -6,9 +8,11 @@ sslcert
 package-lock.json
 
 
+
 # local env files
 .env.local
 .env.*.local
+.env
 
 # Log files
 npm-debug.log*

@@ -1,73 +1,74 @@
 const express = require("express");
-// const cors = require("cors");
+const bodyParser = require("body-parser");
+const path = require("path");
+const dotenv = require("dotenv");
+// импорт для https сервера
+// const https = require("https");
+// const fs = require("fs");
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-// https сервер
-const https = require('https')
-const fs = require('fs')
+// загружаю переменные из файла .env
+dotenv.config();
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+// импортирую роутеры из модулей
+const cityPayRouter = require("./routes/citypay");
+const payDayRouter = require("./routes/payday");
+const postOfficeRouter = require("./routes/postoffice");
+const postRouter = require("./routes/post");
+const dealerRouter = require("./routes/dealer");
+const loginRouter = require("./routes/login");
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-const PORT = 443;
-const INTERFACE = "195.158.222.116"
-// const INTERFACE = "localhost";
-// const INTERFACE = "10.100.0.11";
-// const ORIGIN = "http://localhost:8080";
-// const ORIGIN = 'https://asknet.online'
-// const ORIGIN = 'http://10.100.0.100'
+const setReqIp = require("./middleware/requestIp");
 
-// const adminRouter = require("./routes/admin");
-// const userRouter = require("./routes/user");
-// const feesRouter = require("./routes/fees");
-// const paysRouter = require("./routes/pays");
-// const tariffRouter = require("./routes/tariff");
-// const loginRouter = require("./routes/login");
+// переменные для порта и адреса для expressjs
+// const PORT = 8443;
+// const INTERFACE = "195.158.222.116";
+const PORT = 3000;
+const INTERFACE = "127.0.0.1";
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-// https сервер
-const hskey = fs.readFileSync('./sslcert/privkey.pem')
-const hscert = fs.readFileSync('./sslcert/fullchain.pem')
-const options = {
-key: hskey,
-cert: hscert
-};
+// https сервер конфигурация
+// const hskey = fs.readFileSync("./sslcert/privkey.pem");
+// const hscert = fs.readFileSync("./sslcert/fullchain.pem");
+// const options = {
+// key: hskey,
+// cert: hscert,
+// };
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-
+// создаю веб-сервер и подключаю миддлеваре >>>>>>>>>>>>>>
 const app = express();
-app.use(express.static('static'));
-// app.use(
-//   cors({
-//     origin: ORIGIN,
-//     credentials: true,
-//   })
-// );
 
-// app.use(express.urlencoded({ extended: false }));
-// app.use(express.json());
+app.set("view engine", "pug");
+app.set("views", "./views");
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "public")));
+app.use(setReqIp);
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-// app.use("/admin", adminRouter);
-// app.use("/user", userRouter);
-// app.use("/tariff", tariffRouter);
-// app.use("/fees", feesRouter);
-// app.use("/pays", paysRouter);
-// app.use("/login", loginRouter);
+// Описываю маршруты >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+app.use("/login", loginRouter);
+app.use("/post", postRouter);
+app.use("/psb", cityPayRouter);
+app.use("/paydayreport", payDayRouter);
+app.use("/postoffice", postOfficeRouter);
+app.use("/dealer", dealerRouter);
+app.use("/", (req, res, next) => {
+  res.sendFile(path.join(__dirname, "views", "404.html"));
+});
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-// app.use((req, res) => {
-//   const error = new Error("Not found");
-//   error.status = 404;
-//   res.status(error.status || 500).json({
-//     message: error.message,
-//   });
+// запуск http сервер >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+app.listen(PORT, INTERFACE, () => {
+  console.log(`The server started on ${INTERFACE} port ${PORT}`);
+});
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+// запуск https сервер >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// const server = https.createServer(options, app);
+// server.listen(PORT, INTERFACE, () => {
+// console.log(`The server started on ${INTERFACE} port ${PORT}`);
 // });
-
-app.get('/', (req, res) => {
-  res.send("hello")
-})
-
-// http сервер
-// app.listen(PORT, INTERFACE, () => {
-  // console.log(`The server started on ${INTERFACE} port ${PORT}`);
-// });
-
-// https сервер
-const server = https.createServer(options, app);
-server.listen(PORT, INTERFACE, () => {
-  console.log(`The server started on ${INTERFACE} port ${PORT}`)
-})
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

@@ -1,39 +1,25 @@
-GET https://billing.asknet.online:9000/user
-Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk5LCJpYXQiOjE2NjAwMTc1OTMsImV4cCI6MTY2MDA2MDc5M30.5P1YJ59NoyZrpKstdExB7NP93r64WO99_hD-NusBCeM
+GET http://127.0.0.1:3000/post?QueryType=check&TransactionId=185&TransactionDate=20230219130000&Account=1107&Amount=10.00
 
 ###
-GET https://billing.asknet.online:9000/user/stats
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk5LCJpYXQiOjE2NjAwMTc0MzAsImV4cCI6MTY2MDA2MDYzMH0.LoPIJXPJrqKHE9ob8trXmdrTBwuo_R1iNjsvuQ61F7w
+GET http://127.0.0.1:3000/post?QueryType=pay&TransactionId=111111&TransactionDate=20230219130000&Account=1069&Amount=500.00
 
 ###
-POST https://billing.asknet.online:9000/user/password
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk5LCJpYXQiOjE2NjAwMTc0MzAsImV4cCI6MTY2MDA2MDYzMH0.LoPIJXPJrqKHE9ob8trXmdrTBwuo_R1iNjsvuQ61F7w
-Content-Type: application/json
-
-{
-  "previous": "555555",
-  "candidate": "555555",
-  "confirmed": "555555"
-}
-###
-
-POST https://billing.asknet.online:9000/login
-Content-Type: application/json
-
-{
-  "login": "admin_kryk",
-  "password": "09051945"
-}
+GET http://127.0.0.1:3000/post?QueryType=cancel&TransactionId=111111&TransactionDate=20230219130000&Account=1069&Amount=500.00
 
 ###
-
-GET https://billing.asknet.online:9000/user/authorization
+GET http://127.0.0.1:3000/dealer?QueryType=cancel&TransactionId=185&TransactionDate=20230219130000&Account=1107&Amount=104.00
 
 ###
-POST https://billing.asknet.online:9000/login
-Content-Type: application/json
+GET http://127.0.0.1:3000/dealer?QueryType=pay&TransactionId=0&TransactionDate=20230219130000&Account=1541&Amount=550.00
 
-{
-  "login": "admin_kryk",
-  "password": "09051945"
-}
+###
+GET https://chernuhino.online:8443/paydayreport?CheckDateBegin=20230219190000&CheckDateEnd=20230222235959
+
+###
+# POST https://billing.asknet.online:9000/login
+# Content-Type: application/json
+
+# {
+#   "login": "admin_kryk",
+#   "password": "09051945"
+# }

@@ -1,0 +1,14 @@
+.address
+  .address__wrapper 
+    span.address__key Лицевой счёт:
+    span.address__value #{account}
+  .address__wrapper 
+    span.address__key ФИО: 
+    span.address__value #{fio}
+  .address__wrapper 
+    span.address__key Адрес:
+    span.address__value #{address}
+
+p.success-message.success-message--fail Не удалось провести оплату!
+a.base-link(href="/dealer?account=" + account) Повторить
+    
