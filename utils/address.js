@@ -4,9 +4,9 @@ function firstLetterToUpperCase(str) {
 
 function getCity(str) {
   if (firstLetterToUpperCase(str) === "Малоивановка") {
-    return `с. ${firstLetterToUpperCase(str)}`;
+    return `с.${String.fromCharCode(160)}${firstLetterToUpperCase(str)}`;
   } else {
-    return `пгт. ${firstLetterToUpperCase(str)}`;
+    return `пгт.${String.fromCharCode(160)}${firstLetterToUpperCase(str)}`;
   }
 }
 
@@ -15,20 +15,20 @@ function getStreet(str) {
     firstLetterToUpperCase(str) === "Солнечный" ||
     firstLetterToUpperCase(str) === "Молодёжный"
   ) {
-    return `квартал ${firstLetterToUpperCase(str)}`;
+    return `квартал${String.fromCharCode(160)}${firstLetterToUpperCase(str)}`;
   }
   if (str.includes("(")) {
-    return `переулок ${str.split(" ")[0]}`;
+    return `переулок${String.fromCharCode(160)}${str.split(" ")[0]}`;
   } else {
-    return `улица ${str}`;
+    return `улица${String.fromCharCode(160)}${str}`;
   }
 }
 
 function getBuild(build, flat = "") {
   if (flat) {
-    return `дом ${build}, квартира ${flat}`;
+    return `дом${String.fromCharCode(160)}${build}${String.fromCharCode(160)}квартира ${flat}`;
   } else {
-    return `дом ${build}`;
+    return `дом${String.fromCharCode(160)}${build}`;
   }
 }
 

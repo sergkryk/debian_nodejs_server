@@ -4,53 +4,33 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(http-equiv="X-UA-Compatible" content="IE=edge")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(href="/css/normalize.css" rel="stylesheet")
+    link(href="/css/styles.min.css" rel="stylesheet")
     title #{title}
   body
-    header
-    main
-      .container
-        p Лицевой счёт № #{account}
-        p ФИО: #{fio}
-        p Адрес: #{street}
-        form(action="", method="POST")
-          .input-container
-            label(for="sum"/label)
-            input(type="text" id="sum" name="sum" placeholder="Введите сумму оплаты" required="true")
-          input(type="text" id="uid" name="uid" value=uid hidden="true")
-          input(type="text" id="account" name="account" value=account hidden="true")
-          input(type="text" id="address" name="address" value=street hidden="true")
-          button(type="submit") Оплатить
-    footer
-    script.
-      document.addEventListener("submit", submitHandler);
-      function submitHandler(evt) {
-        const form = evt.target;
-        const data = new FormData(form);
-
-        fetch(form.action, {
-          method: form.method,
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            uid: data.get("uid"),
-            account: data.get("account"),
-            sum: data.get("sum"),
-            address: data.get("address"),
-          }),
-        }).then((res) => res.text())
-          .then((text) => new DOMParser().parseFromString(text, "text/html"))
-          .then((doc) => {
-            const result = document.createElement("div");
-            result.innerHTML = doc.body.innerHTML;
-            form.parentNode.innerHTML = result.innerHTML;
-          })
-          .catch((err) => {
-            const result = document.createElement("p");
-            result.textContent = "Не удалось завершить операцию!!!";
-            form.parentNode.innerHTML = result.innerHTML;
-          })
-
-        evt.preventDefault();
-      }
+    .site-container
+      header
+        p ISP Asknet
+      main
+        .container
+          .address
+            .address__wrapper 
+              span.address__key Лицевой счёт:
+              span.address__value #{account}
+            .address__wrapper 
+              span.address__key ФИО: 
+              span.address__value(id="fio") #{fio}
+            .address__wrapper 
+              span.address__key Адрес:
+              span.address__value(id="address") #{street}
+          form.base-form(action="", method="POST")
+            .base-form__container.base-form__container--pay
+              label(for="sum"/label)
+              input(type="text" id="sum" name="sum" placeholder="Введите сумму оплаты" required="true")
+            input(type="text" id="uid" name="uid" value=uid hidden="true")
+            input(type="text" id="account" name="account" value=account hidden="true")
+            input(type="text" id="phone" name="phone" value=phone hidden="true")
+            button(type="submit") Оплатить
+      footer
+        a(href="tel+79591251090") +7(959)125-10-90
+    script(src="/js/pay.js") 

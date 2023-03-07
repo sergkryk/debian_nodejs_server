@@ -1,3 +1,15 @@
-p Оплата на лицевой счет №#{account} по адресу: #[span #{address}] на сумму #{sum} рублей прошла успешно.
+.address
+  .address__wrapper 
+    span.address__key Лицевой счёт:
+    span.address__value #{account}
+  .address__wrapper 
+    span.address__key ФИО: 
+    span.address__value #{fio}
+  .address__wrapper 
+    span.address__key Адрес:
+    span.address__value #{address}
+
+p.success-message Оплата на сумму #[span #{sum}&nbsp;рублей] прошла&nbsp;успешно
+a.base-link(href="/webpay") Новый платёж
 
     

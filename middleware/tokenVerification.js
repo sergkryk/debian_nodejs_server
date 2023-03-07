@@ -15,7 +15,6 @@ const tokenVerification = function (req, res, next) {
   } catch (error) {
     res.redirect("login");
   }
-
 };
 
 module.exports = tokenVerification;
