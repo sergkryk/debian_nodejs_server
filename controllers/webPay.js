@@ -38,7 +38,6 @@ async function check(req, res, next) {
 async function pay(req, res, next) {
   const admin = req.body.admin;
   const { sum, address, fio, uid, account, phone } = req.body;
-  console.log(req.body);
   try {
     const { deposit } = await BillsModel.fetchByUid(uid);
     const updatedDeposit = Number(deposit) + Number(sum);
