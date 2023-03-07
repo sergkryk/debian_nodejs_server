@@ -17,7 +17,7 @@ html(lang="en")
           form.base-form(action="")
             .base-form__container
               label(for="account") Введите лицевой счёт
-              input(type="text" id="account" name="account" placeholder="лицевой счёт пользователя" tabindex="1")
+              input(type="number" id="account" name="account" placeholder="лицевой счёт пользователя" tabindex="1")
             button(type="submit") Проверить
             if notFound
               p Не найден

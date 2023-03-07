@@ -26,7 +26,7 @@ html(lang="en")
           form.base-form(action="", method="POST")
             .base-form__container.base-form__container--pay
               label(for="sum"/label)
-              input(type="text" id="sum" name="sum" placeholder="Введите сумму оплаты" required="true")
+              input(type="number" id="sum" name="sum" placeholder="Введите сумму оплаты" required="true")
             input(type="text" id="uid" name="uid" value=uid hidden="true")
             input(type="text" id="account" name="account" value=account hidden="true")
             input(type="text" id="phone" name="phone" value=phone hidden="true")

@@ -15,7 +15,7 @@ function submitHandler(evt) {
   })
     .then((res) => {
       if (res.status === 200) {
-        window.location.replace('webpay');
+        window.location.replace('dealer');
       }
       if (res.status === 401) {
         alert('Неверное имя пользователя или пароль!')

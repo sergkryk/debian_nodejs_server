@@ -63,7 +63,7 @@ async function pay(req, res, next) {
       message: messageTemplates.paid(account, sum, updatedDeposit),
       isTest: true,
     });
-    res.render("fail", {
+    res.render("success", {
       sum: sum,
       account,
       fio,

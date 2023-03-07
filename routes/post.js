@@ -6,7 +6,7 @@ const reqVerification = require("../middleware/citypayVerification.js");
 const setProvider = require("../middleware/providerId.js")
 
 router.use(reqVerification);
-router.use(setProvider.post);
+router.use(setProvider.dealer);
 
 router.get("/", controller);
 

@@ -1,7 +1,6 @@
 const xml = require("xml");
 
-const codes = require("../config/resultCodes.js");
-const renderPhoneNumber = require("../utils/renderPhoneNumber.js");
+const codes = require("../config/citypayResponseCodes.js");
 const xmlResponse = require("../utils/xml.js");
 const errorHandler = require("../utils/errorHandler.js");
 const messages = require("../utils/sms");
@@ -40,13 +39,7 @@ class QueryController {
       errorHandler({ code: codes.not_found });
     }
     args.transaction = transaction;
-
     let { fio = "", phone = "" } = await UserPi.fetchByUid(uid);
-    if (phone.toString().match(/^72\d{7}$/)) {
-      phone = renderPhoneNumber(phone);
-    } else {
-      phone = "";
-    }
     args.resultCode = codes.other;
     args.user = { uid, disable, fio, phone };
     return new QueryController(args);

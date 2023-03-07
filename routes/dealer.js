@@ -1,14 +1,13 @@
 const express = require("express");
 const router = express.Router();
+// const path = require("path");
 
-const controller = require("../controllers/psb");
-const reqVerification = require("../middleware/reqVerification.js");
-const setProvider = require("../middleware/addProviderId.js")
+const controller = require("../controllers/dealer");
+const tokenVerification = require("../middleware/tokenVerification");
 
-router.use(reqVerification);
+router.use(tokenVerification);
 
-router.use(setProvider.dealer);
-
-router.get("/", controller);
+router.get("/", controller.check);
+router.post("/", controller.pay);
 
 module.exports = router;
