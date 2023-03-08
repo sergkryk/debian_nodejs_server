@@ -39,7 +39,9 @@ const reqVerification = function (req, res, next) {
     next();
   } catch (error) {
     res.set("Content-Type", "text/xml");
-    res.send(xmlResponse(3, "Check your query format!"));
+    res.send(
+      xmlResponse("error", { code: "3", comment: "Check your query format!" })
+    );
   }
 };
 

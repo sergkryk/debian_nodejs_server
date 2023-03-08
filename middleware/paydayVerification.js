@@ -7,7 +7,9 @@ function verifyReportReq(req, res, next) {
     next();
   } else {
     res.set("Content-Type", "text/xml");
-    res.send(xmlResponse(3, "Check your queries format!" ));
+    res.send(
+      xmlResponse("error", { code: "3", comment: "Check your query format!" })
+    );
   }
 }
 
