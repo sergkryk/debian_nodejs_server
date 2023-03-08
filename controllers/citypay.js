@@ -111,8 +111,6 @@ class QueryController {
     await this.addPaymentRecord();
     await this.updateUserDeposit();
     await this.informUserViaSms();
-    // this.resultCode = codes.ok;
-    // return xmlResponse("pay", this)
     return this.onSuccess()
   }
   async cancel() {
@@ -125,8 +123,6 @@ class QueryController {
     await this.delPaymentRecord();
     await this.updateUserDeposit();
     await this.addActionsRecord();
-    // this.resultCode = codes.ok;
-    // return xmlResponse("cancel", this)
     return this.onSuccess()
   }
 }
