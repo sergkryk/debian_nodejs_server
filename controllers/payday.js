@@ -17,7 +17,7 @@ class QueryController {
   }
   async response() {
     try {
-      this.items = await Report.find(this.CheckDateBegin, this.CheckDateEnd, this.address);
+      this.items = await Report.find(this.CheckDateBegin, this.CheckDateEnd, this.requestIp);
       if (this.items.length > 0) {
         return this.sendXmlResponse();
       }

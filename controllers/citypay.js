@@ -56,7 +56,7 @@ class QueryController {
       this.TransactionId,
       this.TransactionDate,
       this.Amount,
-      this.address,
+      this.requestIp,
       this.providerId,
       this.methodId,
     );
@@ -96,7 +96,7 @@ class QueryController {
     const response = await Actions.logAction(
       this.user.uid,
       this.TransactionId,
-      this.address,
+      this.requestIp,
       this.providerId
     );
   }

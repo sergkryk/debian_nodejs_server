@@ -50,9 +50,9 @@ async function pay(req, res, next) {
       "",
       "",
       sum,
-      req.query.address,
+      req.query.requestIp,
+      admin.aid,
       PAY_TYPE,
-      admin.aid
     );
     if (!payRecordRequest?.insertId) {
       await BillsModel.update(uid, deposit);
