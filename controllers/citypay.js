@@ -57,7 +57,8 @@ class QueryController {
       this.TransactionDate,
       this.Amount,
       this.address,
-      this.providerId
+      this.providerId,
+      this.methodId,
     );
     if (response.hasOwnProperty("insertId")) {
       this.TransactionExt = response.insertId;
@@ -95,7 +96,8 @@ class QueryController {
     const response = await Actions.logAction(
       this.user.uid,
       this.TransactionId,
-      this.address
+      this.address,
+      this.providerId
     );
   }
   onSuccess() {

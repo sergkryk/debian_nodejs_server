@@ -9,7 +9,7 @@ async function fetchByExId(ex_id) {
   return data;
 }
 
-async function addPay(uid, transactionId, transactionDate, amount, ip, method, aid = 5) {
+async function addPay(uid, transactionId, transactionDate, amount, ip, aid, method) {
   const response = await pool.execute(
     `INSERT INTO payments (
         date,
