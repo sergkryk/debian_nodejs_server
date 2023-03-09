@@ -16,7 +16,6 @@ class QueryController {
     );
   }
   async response() {
-    console.log(this);
     try {
       this.items = await Report.find(this.CheckDateBegin, this.CheckDateEnd, this.providerId);
       if (this.items.length > 0) {
