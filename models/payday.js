@@ -13,9 +13,9 @@ function getXml(item) {
   };
 }
 
-async function find(start, end, ip) {
+async function find(start, end, aid) {
   const data = await pool.execute(
-    `SELECT p.ext_id as TransactionId, u.id as Account, p.dsc as TransactionDate, p.sum as Amount FROM payments p INNER JOIN users u ON u.uid = p.uid WHERE ip = INET_ATON('${ip}') AND date BETWEEN TIMESTAMP(${start}) AND TIMESTAMP(${end})`
+    `SELECT p.ext_id as TransactionId, u.id as Account, p.dsc as TransactionDate, p.sum as Amount FROM payments p INNER JOIN users u ON u.uid = p.uid WHERE p.aid = ${aid} AND date BETWEEN TIMESTAMP(${start}) AND TIMESTAMP(${end})`
   );
   if (data.length > 0) {
     const body = data[0];

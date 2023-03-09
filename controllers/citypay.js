@@ -56,8 +56,9 @@ class QueryController {
       this.TransactionId,
       this.TransactionDate,
       this.Amount,
-      this.address,
-      this.providerId
+      this.requestIp,
+      this.providerId,
+      this.methodId,
     );
     if (response.hasOwnProperty("insertId")) {
       this.TransactionExt = response.insertId;
@@ -95,45 +96,16 @@ class QueryController {
     const response = await Actions.logAction(
       this.user.uid,
       this.TransactionId,
-      this.address
+      this.requestIp,
+      this.providerId
     );
-    console.log(response);
   }
-  sendXmlResponse() {
-    const responses = {
-      check: {
-        Response: [
-          { TransactionId: this.TransactionId },
-          { ResultCode: this.resultCode },
-          {
-            Fields: [{ field1: [{ _attr: { name: "name" } }, this.user.fio] }],
-          },
-        ],
-      },
-      pay: {
-        Response: [
-          { TransactionId: this.TransactionId },
-          { TransactionExt: this.TransactionExt },
-          { Amount: this.Amount },
-          { ResultCode: this.resultCode },
-          { Comment: this.comment },
-        ],
-      },
-      cancel: {
-        Response: [
-          { TransactionId: this.TransactionId },
-          { TransactionExt: this.transaction.id },
-          { Amount: this.Amount },
-          { ResultCode: this.resultCode },
-          { Comment: this.comment },
-        ],
-      },
-    };
-    return xml(responses[this.QueryType], { declaration: true });
+  onSuccess() {
+    this.resultCode = codes.ok;
+    return xmlResponse(this.QueryType, this)
   }
   async check() {
-    this.resultCode = codes.ok;
-    return this.sendXmlResponse();
+    return this.onSuccess()
   }
   async pay() {
     await this.getUserDeposit();
@@ -141,8 +113,7 @@ class QueryController {
     await this.addPaymentRecord();
     await this.updateUserDeposit();
     await this.informUserViaSms();
-    this.resultCode = codes.ok;
-    return this.sendXmlResponse();
+    return this.onSuccess()
   }
   async cancel() {
     if (this.transaction.sum !== Number(this.Amount) || this.user.uid !== this.transaction.uid) {
@@ -154,8 +125,7 @@ class QueryController {
     await this.delPaymentRecord();
     await this.updateUserDeposit();
     await this.addActionsRecord();
-    this.resultCode = codes.ok;
-    return this.sendXmlResponse();
+    return this.onSuccess()
   }
 }
 
@@ -167,7 +137,9 @@ async function init(req, res) {
     res.send(data);
     return;
   } catch (error) {
-    res.send(xmlResponse(error.code));
+    res.send(
+      xmlResponse("error", { code: error.code })
+    );
     console.log(error.message);
   }
 }

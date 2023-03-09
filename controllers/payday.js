@@ -1,6 +1,6 @@
 const xml = require("xml");
 
-const Report = require('../models/psb_report');
+const Report = require('../models/payday');
 
 class QueryController {
   constructor(args) {
@@ -17,7 +17,7 @@ class QueryController {
   }
   async response() {
     try {
-      this.items = await Report.find(this.CheckDateBegin, this.CheckDateEnd, this.address);
+      this.items = await Report.find(this.CheckDateBegin, this.CheckDateEnd, this.providerId);
       if (this.items.length > 0) {
         return this.sendXmlResponse();
       }

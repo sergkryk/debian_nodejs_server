@@ -1,9 +1,9 @@
 function setReqIp(req, res, next) {
   const ip = req.ip || req.socket.remoteAddress;
   if (ip) {
-    req.query.address = ip;
+    req.query.requestIp = ip;
   } else {
-    req.query.address = "";
+    req.query.requestIp = "";
   }
   next();
 }

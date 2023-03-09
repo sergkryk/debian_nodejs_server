@@ -1,7 +1,7 @@
 const pool = require("../utils/db");
 const { processResponse } = require("../utils/dbValidation");
 
-async function logAction(uid, transactionId, ip) {
+async function logAction(uid, transactionId, ip, aid) {
   const response = await pool.execute(
     `INSERT INTO admin_actions (
       actions,
@@ -16,7 +16,7 @@ async function logAction(uid, transactionId, ip) {
       NOW(),
       INET_ATON('${ip}'),
       ${uid},
-      3,
+      ${aid},
       10
     );`
   );
