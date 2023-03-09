@@ -1,4 +1,4 @@
-const xml = require("xml");
+const xmlResponse = require("../utils/xml");
 
 const Report = require('../models/payday');
 
@@ -8,23 +8,16 @@ class QueryController {
       this[key] = args[key];
     }
   }
-
-  sendXmlResponse() {
-    return xml(
-      { Response: this.items},
-      { declaration: true }
-    );
-  }
   async response() {
     try {
       this.items = await Report.find(this.CheckDateBegin, this.CheckDateEnd, this.providerId);
       if (this.items.length > 0) {
-        return this.sendXmlResponse();
+        console.log(...this.items);
+        return xmlResponse("payday", this.items);
       }
       throw new Error('Not found!')
     } catch (error) {
-      console.log(error);
-      return this.sendXmlResponse();
+      return xmlResponse("payday", '');
     }
   }
 }
