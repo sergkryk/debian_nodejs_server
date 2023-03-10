@@ -12,7 +12,6 @@ class QueryController {
     try {
       this.items = await Report.find(this.CheckDateBegin, this.CheckDateEnd, this.providerId);
       if (this.items.length > 0) {
-        console.log(...this.items);
         return xmlResponse("payday", this.items);
       }
       throw new Error('Not found!')
