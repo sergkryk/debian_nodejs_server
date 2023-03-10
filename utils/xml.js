@@ -35,7 +35,10 @@ function xmlResponse(type, opt) {
         { Comment: `${opt?.comment || ""}` },
       ],
     },
-  };
+    payday: {
+      Response: opt
+    }
+  }
   return xml(responses[type], { declaration: true });
 }
 

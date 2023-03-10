@@ -3,14 +3,14 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const dotenv = require("dotenv");
 // импорт для https сервера
-// const https = require("https");
-// const fs = require("fs");
+const https = require("https");
+const fs = require("fs");
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 // загружаю переменные из файла .env
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '.env') });
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
+console.log(process.env)
 // импортирую роутеры из модулей
 const cityPayRouter = require("./routes/citypay");
 const payDayRouter = require("./routes/payday");
@@ -23,19 +23,19 @@ const loginRouter = require("./routes/login");
 const setReqIp = require("./middleware/requestIp");
 
 // переменные для порта и адреса для expressjs
-// const PORT = 8443;
-// const INTERFACE = "195.158.222.116";
-const PORT = 3000;
-const INTERFACE = "127.0.0.1";
+const PORT = 8443;
+const INTERFACE = "195.158.222.116";
+// const PORT = 3000;
+// const INTERFACE = "127.0.0.1";
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 // https сервер конфигурация
-// const hskey = fs.readFileSync("./sslcert/privkey.pem");
-// const hscert = fs.readFileSync("./sslcert/fullchain.pem");
-// const options = {
-// key: hskey,
-// cert: hscert,
-// };
+const hskey = fs.readFileSync("/etc/letsencrypt/live/chernuhino.online/privkey.pem");
+const hscert = fs.readFileSync("/etc/letsencrypt/live/chernuhino.online/fullchain.pem");
+const options = {
+key: hskey,
+cert: hscert,
+};
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 // создаю веб-сервер и подключаю миддлеваре >>>>>>>>>>>>>>
@@ -61,14 +61,14 @@ app.use("/", (req, res, next) => {
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 // запуск http сервер >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-app.listen(PORT, INTERFACE, () => {
-  console.log(`The server started on ${INTERFACE} port ${PORT}`);
-});
+// app.listen(PORT, INTERFACE, () => {
+//   console.log(`The server started on ${INTERFACE} port ${PORT}`);
+// });
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 // запуск https сервер >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-// const server = https.createServer(options, app);
-// server.listen(PORT, INTERFACE, () => {
-// console.log(`The server started on ${INTERFACE} port ${PORT}`);
-// });
+const server = https.createServer(options, app);
+server.listen(PORT, INTERFACE, () => {
+console.log(`The server started on ${INTERFACE} port ${PORT}`);
+});
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

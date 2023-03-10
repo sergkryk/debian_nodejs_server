@@ -1,0 +1,1 @@
+SELECT id, aid, name, disable, password, CONVERT(DECODE(password, 'abills345678901234490137') USING utf8) as password FROM admins WHERE id = 'reznik_olga';
