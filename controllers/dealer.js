@@ -61,7 +61,6 @@ async function pay(req, res, next) {
     messages.single({
       number: phone,
       message: messageTemplates.paid(account, sum, updatedDeposit),
-      isTest: false,
     });
     res.render("success", {
       sum: sum,

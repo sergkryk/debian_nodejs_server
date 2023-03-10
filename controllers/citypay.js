@@ -89,7 +89,6 @@ class QueryController {
         this.Amount,
         this.user.deposit
       ),
-      isTest: false,
     });
   }
   async addActionsRecord() {
