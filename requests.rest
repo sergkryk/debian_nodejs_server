@@ -1,10 +1,10 @@
-GET http://127.0.0.1:3000/psb?QueryType=check&TransactionId=185&TransactionDate=20230219130000&Account=1207&Amount=10.00
+GET http://127.0.0.1:3000/psb?QueryType=check&TransactionId=185&TransactionDate=20230219130000&Account=1116&Amount=10.00
 
 ###
-GET http://127.0.0.1:3000/psb?QueryType=pay&TransactionId=1111115&TransactionDate=20230219130000&Account=1069&Amount=500.00
+GET http://127.0.0.1:3000/psb?QueryType=pay&TransactionId=1111115&TransactionDate=20230219130000&Account=1116&Amount=500.00
 
 ###
-GET http://127.0.0.1:3000/psb?QueryType=cancel&TransactionId=1111115&TransactionDate=20230219130000&Account=1069&Amount=500.00
+GET http://127.0.0.1:3000/psb?QueryType=cancel&TransactionId=1111115&TransactionDate=20230219130000&Account=1116&Amount=500.00
 
 ###
 GET http://127.0.0.1:3000/dealer?QueryType=cancel&TransactionId=185&TransactionDate=20230219130000&Account=1107&Amount=104.00
@@ -24,9 +24,9 @@ GET http://127.0.0.1:3000/paydayreport?CheckDateBegin=20230307190000&CheckDateEn
 #   "password": "09051945"
 # }
 
-https://chernuhino.online:8443/psb?QueryType=check&TransactionId=185&TransactionDate=20230219130000&Account=1207&Amount=10.00
+https://chernuhino.online:8443/psb?QueryType=check&TransactionId=185&TransactionDate=20230219130000&Account=1116&Amount=10.00
 ###
-https://chernuhino.online:8443/psb?QueryType=pay&TransactionId=185&TransactionDate=20230219130000&Account=1207&Amount=10.00
+https://chernuhino.online:8443/psb?QueryType=pay&TransactionId=185&TransactionDate=20230219130000&Account=1116&Amount=10.00
 ###
-https://chernuhino.online:8443/psb?QueryType=cancel&TransactionId=185&TransactionDate=20230219130000&Account=1207&Amount=10.00
+https://chernuhino.online:8443/psb?QueryType=cancel&TransactionId=185&TransactionDate=20230219130000&Account=1116&Amount=10.00
 

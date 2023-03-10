@@ -41,10 +41,6 @@ async function pay(req, res, next) {
   try {
     const { deposit } = await BillsModel.fetchByUid(uid);
     const updatedDeposit = Number(deposit) + Number(sum);
-    const updateBillRequest = await BillsModel.update(uid, updatedDeposit);
-    if (updateBillRequest?.changedRows !== 1) {
-      throw new Error("Failed to update deposit!");
-    }
     const payRecordRequest = await PaymentsModel.addPay(
       uid,
       "",
@@ -55,13 +51,17 @@ async function pay(req, res, next) {
       PAY_TYPE,
     );
     if (!payRecordRequest?.insertId) {
-      await BillsModel.update(uid, deposit);
       throw new Error("Failed to log payment!");
+    }
+    const updateBillRequest = await BillsModel.update(uid, updatedDeposit);
+    if (updateBillRequest?.changedRows !== 1) {
+      await BillsModel.update(uid, deposit);
+      throw new Error("Failed to update deposit!");
     }
     messages.single({
       number: phone,
       message: messageTemplates.paid(account, sum, updatedDeposit),
-      isTest: true,
+      isTest: false,
     });
     res.render("success", {
       sum: sum,
