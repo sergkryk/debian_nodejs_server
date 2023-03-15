@@ -1,3 +1,5 @@
+var fs = require("fs");
+
 const UserModel = require("../models/users");
 const UserPiModel = require("../models/users_pi");
 const BillsModel = require("../models/bills");
@@ -68,9 +70,19 @@ async function updateUserDeposit(aid, ip, uid, sum) {
   }
 }
 
+function logToFile(filename, string) {
+  const writeStream = fs.createWriteStream(filename, {flags: 'a'});
+  writeStream.write(string);
+  writeStream.end();
+}
+
 async function pay(req, res, next) {
   const admin = req.body.admin;
   const { sum, address, fio, uid, account, phone } = req.body;
+  logToFile(
+    'requests.txt',
+    `Дата: ${new Date().toLocaleString('ru')} пользователь: user_${account}, сумма: ${sum} рублей, администратор: ${admin.name}\n`
+     )
   try {
     const billUpdateQuery = await updateUserDeposit(admin.aid, req.query.requestIp, uid, sum);
     if ( billUpdateQuery.status === 'success' ) {
@@ -86,6 +98,10 @@ async function pay(req, res, next) {
       });
     }
   } catch (error) {
+    logToFile(
+      'errors.txt',
+      `Дата: ${new Date().toLocaleString('ru')} пользователь: user_${account}, сумма: ${sum} рублей, администратор: ${admin.name}, ошибка: ${error.message} \n`
+       )
     res.render("fail", {
       sum: sum,
       account,
