@@ -3,14 +3,14 @@ const xmlResponse = require("../utils/xml.js");
 const errorHandler = require("../utils/errorHandler.js");
 const messages = require("../utils/sms");
 const messageTemplates = require("../utils/messageTemplates.js");
+const logToFile = require("../utils/log");
 
 // модели для работы с базой данных
 const User = require("../models/users.js");
 const UserPi = require("../models/users_pi.js");
-const Bills = require("../models/bills.js");
 const Pays = require("../models/payments.js");
-const Actions = require("../models/admin_actions.js");
 
+// модули для отделения функционала
 const addTransaction = require("../modules/addTransaction");
 const cancelTransaction = require("../modules/cancelTransaction");
 
@@ -101,6 +101,10 @@ class QueryController {
 }
 
 async function init(req, res) {
+  logToFile(
+    "requests.txt",
+    `пользователь: user_${req.query.Account}, сумма: ${req.query.Amount} рублей, id администратора: ${req.query.providerId}, тип запроса: ${req.query.QueryType}\n`
+  );
   res.set("Content-Type", "text/xml");
   try {
     const controller = await QueryController.initialize(req.query);
@@ -108,6 +112,10 @@ async function init(req, res) {
     res.send(data);
     return;
   } catch (error) {
+    logToFile(
+      "errors.txt",
+      `пользователь: user_${req.query.Account}, сумма: ${req.query.Amount} рублей, id администратора: ${req.query.providerId}, тип запроса: ${req.query.QueryType}\n`
+    );
     res.send(xmlResponse("error", { code: error.code }));
     console.log(error.message);
   }
