@@ -35,39 +35,56 @@ async function check(req, res, next) {
   }
 }
 
+async function updateUserDeposit(aid, ip, uid, sum) {
+  // записываю платёж в таблицу payments
+  const paymentRecordRequest = await PaymentsModel.addPay(
+    uid,
+    "",
+    "",
+    sum,
+    ip,
+    aid,
+    PAY_TYPE,
+  );
+  // получаю запись о платеже из таблицы payments
+  const paymentRecord = await PaymentsModel.fetchById(paymentRecordRequest.insertId);
+  // сравниваю данные с записью в таблице
+  if (Number(paymentRecord.sum) !== Number(sum) || Number(paymentRecord.uid) !== Number(uid)) {
+    throw new Error("Failed to log payment!");
+  }
+  // обновляю депозит пользователя
+  await BillsModel.update(uid, Number(paymentRecord.sum) + Number(paymentRecord.last_deposit));
+  // сравниваю депозит в таблице с отправленными данными для перестраховки
+  const { deposit } = await BillsModel.fetchByUid(uid);
+  if (Number(deposit) !== Number(paymentRecord.sum) + Number(paymentRecord.last_deposit)) {
+    throw new Error("Failed to update deposit!");
+  }
+  return {
+    uid,
+    sum,
+    deposit,
+    paymentId: paymentRecordRequest.insertId,
+    status: 'success',
+  }
+}
+
 async function pay(req, res, next) {
   const admin = req.body.admin;
   const { sum, address, fio, uid, account, phone } = req.body;
   try {
-    const { deposit } = await BillsModel.fetchByUid(uid);
-    const updatedDeposit = Number(deposit) + Number(sum);
-    const payRecordRequest = await PaymentsModel.addPay(
-      uid,
-      "",
-      "",
-      sum,
-      req.query.requestIp,
-      admin.aid,
-      PAY_TYPE,
-    );
-    if (!payRecordRequest?.insertId) {
-      throw new Error("Failed to log payment!");
+    const billUpdateQuery = await updateUserDeposit(admin.aid, req.query.requestIp, uid, sum);
+    if ( billUpdateQuery.status === 'success' ) {
+      messages.single({
+        number: phone,
+        message: messageTemplates.paid(account, sum, billUpdateQuery.deposit),
+      });
+      res.render("success", {
+        sum: sum,
+        account,
+        fio,
+        address: address || "",
+      });
     }
-    const updateBillRequest = await BillsModel.update(uid, updatedDeposit);
-    if (updateBillRequest?.changedRows !== 1) {
-      await BillsModel.update(uid, deposit);
-      throw new Error("Failed to update deposit!");
-    }
-    messages.single({
-      number: phone,
-      message: messageTemplates.paid(account, sum, updatedDeposit),
-    });
-    res.render("success", {
-      sum: sum,
-      account,
-      fio,
-      address: address || "",
-    });
   } catch (error) {
     res.render("fail", {
       sum: sum,

@@ -1,5 +1,3 @@
-const xml = require("xml");
-
 const codes = require("../config/citypayResponseCodes.js");
 const xmlResponse = require("../utils/xml.js");
 const errorHandler = require("../utils/errorHandler.js");

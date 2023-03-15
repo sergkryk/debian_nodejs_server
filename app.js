@@ -2,14 +2,15 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
 const dotenv = require("dotenv");
-// импорт для https сервера
-// const https = require("https");
-// const fs = require("fs");
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 // загружаю переменные из файла .env
 dotenv.config();
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+// импорт для https сервера
+// const https = require("https");
+// const fs = require("fs");
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 // импортирую роутеры из модулей
 const cityPayRouter = require("./routes/citypay");
@@ -72,3 +73,49 @@ app.listen(PORT, INTERFACE, () => {
 // console.log(`The server started on ${INTERFACE} port ${PORT}`);
 // });
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+// const query = require("./utils/database");
+
+// (async function main() {
+//   try {
+//     const response = await query(
+//         `INSERT INTO admin_actions (
+//           actions,
+//           datetime,
+//           ip,
+//           uid,
+//           aid,
+//           action_type
+//         )
+//         VALUES (
+//           'Test',
+//           NOW(),
+//           INET_ATON('127.0.0.1'),
+//           100,
+//           5,
+//           10
+//         );`
+//       );
+//     // const response = await dbQuery(
+//     //   `INSERT INTO admin_actions (
+//     //     actions,
+//     //     datetime,
+//     //     ip,
+//     //     uid,
+//     //     aid,
+//     //     action_type
+//     //   )
+//     //   VALUES (
+//     //     'Transaction TEST canceled',
+//     //     NOW(),
+//     //     INET_ATON('127.0.0.1'),
+//     //     399,
+//     //     5,
+//     //     2
+//     //   );`
+//     // );
+//     console.log(response);
+//   } catch (error) {
+//     console.log(error.code);
+//   }
+// })();
