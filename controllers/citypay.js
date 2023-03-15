@@ -92,8 +92,8 @@ class QueryController {
       aid: this.providerId,
       ip: this.requestIp,
     });
-    if (query.status === 'success') {
-      return this.onSuccess()
+    if (query.status === "success") {
+      return this.onSuccess();
     } else {
       errorHandler({ code: codes.other });
     }
@@ -114,7 +114,7 @@ async function init(req, res) {
   } catch (error) {
     logToFile(
       "errors.txt",
-      `пользователь: user_${req.query.Account}, сумма: ${req.query.Amount} рублей, id администратора: ${req.query.providerId}, тип запроса: ${req.query.QueryType}\n`
+      `пользователь: user_${req.query.Account}, сумма: ${req.query.Amount} рублей, id администратора: ${req.query.providerId}, тип запроса: ${req.query.QueryType}, ошибка: ${JSON.stringify(error)}\n`
     );
     res.send(xmlResponse("error", { code: error.code }));
     console.log(error.message);
