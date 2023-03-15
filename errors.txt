@@ -1,0 +1,2 @@
+Дата: 15.03.2023, 16:44:55 пользователь: user_1116, сумма: 10 рублей, администратор: Krykov Serge, ошибка: Unknown column 'undefined' in 'where clause' 
+Дата: 15.03.2023, 16:45:46 пользователь: user_1116, сумма: 10 рублей, администратор: Krykov Serge, ошибка: Unknown column 'undefined' in 'where clause' 
