@@ -1,28 +1,17 @@
-const pool = require("../utils/db");
-const { processResponse } = require("../utils/dbValidation");
-
+const dbQuery = require("../utils/database");
 
 async function fetchAllMonthly() {
-  const response = await pool.execute(
-    `SELECT id FROM tarif_plans WHERE month_fee > 0`
-  );
-  const data = processResponse(response);
+  const data = await dbQuery(`SELECT id FROM tarif_plans WHERE month_fee > 0`);
   return data;
 }
 
 async function fetchById(id) {
-  const response = await pool.execute(
-    `SELECT * FROM tarif_plans WHERE id = ${id}`
-  );
-  const data = processResponse(response);
+  const data = await dbQuery(`SELECT * FROM tarif_plans WHERE id = ${id}`);
   return data;
 }
 
 async function fetchUsersByTarif(id) {
-  const response = await pool.execute(
-    `SELECT uid FROM dv_main WHERE tp_id = ${id}`
-  );
-  const data = processResponse(response);
+  const data = await dbQuery(`SELECT uid FROM dv_main WHERE tp_id = ${id}`);
   return data;
 }
 

@@ -2,14 +2,15 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
 const dotenv = require("dotenv");
-// импорт для https сервера
-// const https = require("https");
-// const fs = require("fs");
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 // загружаю переменные из файла .env
 dotenv.config();
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+// импорт для https сервера
+// const https = require("https");
+// const fs = require("fs");
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 // импортирую роутеры из модулей
 const cityPayRouter = require("./routes/citypay");

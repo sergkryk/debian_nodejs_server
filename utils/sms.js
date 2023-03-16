@@ -17,14 +17,15 @@ function multi(numbers, message) {
 }
 
 function single(options) {
-  const { number, message, isTest = true } = options;
+  const { number, message, isTest = false } = options;
   const phone = renderPhoneNumber(number);
   if (phone) {
     sms.sms_send(
       {
         to: phone,
         text: message,
-        test: isTest,
+        // test: isTest,
+        test: true,
       },
       function (e) {
         // console.log(e);

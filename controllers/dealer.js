@@ -1,13 +1,11 @@
 const UserModel = require("../models/users");
 const UserPiModel = require("../models/users_pi");
-const BillsModel = require("../models/bills");
-const PaymentsModel = require("../models/payments");
 
 const address = require("../utils/address");
 const messages = require("../utils/sms");
 const messageTemplates = require("../utils/messageTemplates.js");
-
-const PAY_TYPE = 0;
+const logToFile = require("../utils/log");
+const addTransaction = require("../modules/addTransaction");
 
 async function check(req, res, next) {
   if (!req.query.account) {
@@ -19,8 +17,11 @@ async function check(req, res, next) {
     if (!uid) {
       throw new Error();
     }
-    const { city, fio, phone, address_street, address_build, address_flat } = await UserPiModel.fetchByUid(uid);
-    const addressString = `${address.getCity(city)} ${address.getStreet(address_street)} ${address.getBuild(address_build, address_flat)}`;
+    const { city, fio, phone, address_street, address_build, address_flat } =
+      await UserPiModel.fetchByUid(uid);
+    const addressString = `${address.getCity(city)} ${address.getStreet(
+      address_street
+    )} ${address.getBuild(address_build, address_flat)}`;
 
     res.render("pay", {
       title: "Account",
@@ -38,38 +39,34 @@ async function check(req, res, next) {
 async function pay(req, res, next) {
   const admin = req.body.admin;
   const { sum, address, fio, uid, account, phone } = req.body;
+  logToFile(
+    "requests.txt",
+    `пользователь: user_${account}, сумма: ${sum} рублей, администратор: ${admin.name}\n`
+  );
   try {
-    const { deposit } = await BillsModel.fetchByUid(uid);
-    const updatedDeposit = Number(deposit) + Number(sum);
-    const payRecordRequest = await PaymentsModel.addPay(
+    const billUpdateQuery = await addTransaction({
+      aid: admin.aid,
+      ip: req.query.requestIp,
       uid,
-      "",
-      "",
       sum,
-      req.query.requestIp,
-      admin.aid,
-      PAY_TYPE,
-    );
-    if (!payRecordRequest?.insertId) {
-      throw new Error("Failed to log payment!");
-    }
-    const updateBillRequest = await BillsModel.update(uid, updatedDeposit);
-    if (updateBillRequest?.changedRows !== 1) {
-      await BillsModel.update(uid, deposit);
-      throw new Error("Failed to update deposit!");
-    }
-    messages.single({
-      number: phone,
-      message: messageTemplates.paid(account, sum, updatedDeposit),
-      isTest: false,
     });
-    res.render("success", {
-      sum: sum,
-      account,
-      fio,
-      address: address || "",
-    });
+    if (billUpdateQuery.status === "success") {
+      messages.single({
+        number: phone,
+        message: messageTemplates.paid(account, sum, billUpdateQuery.deposit),
+      });
+      res.render("success", {
+        sum: sum,
+        account,
+        fio,
+        address: address || "",
+      });
+    }
   } catch (error) {
+    logToFile(
+      "errors.txt",
+      `пользователь: user_${account}, сумма: ${sum} рублей, администратор: ${admin.name}, ошибка: ${error.message} \n`
+    );
     res.render("fail", {
       sum: sum,
       account,

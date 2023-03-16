@@ -1,8 +1,7 @@
-const pool = require("../utils/db");
-const { processResponse } = require("../utils/dbValidation");
+const dbQuery = require("../utils/database");
 
 async function logAction(uid, transactionId, ip, aid) {
-  const response = await pool.execute(
+  const data = await dbQuery(
     `INSERT INTO admin_actions (
       actions,
       datetime,
@@ -20,7 +19,6 @@ async function logAction(uid, transactionId, ip, aid) {
       10
     );`
   );
-  const data = processResponse(response);
   return data;
 }
 

@@ -1,4 +1,3 @@
-const pool = require("../utils/db");
 const jwt = require("../utils/jwt");
 
 const AdminsModel = require("../models/admins");
