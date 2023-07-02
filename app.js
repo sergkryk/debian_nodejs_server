@@ -24,10 +24,10 @@ const loginRouter = require("./routes/login");
 const setReqIp = require("./middleware/requestIp");
 
 // переменные для порта и адреса для expressjs
-const PORT = 8444;
-const INTERFACE = "195.158.222.116";
-// const PORT = 3000;
-// const INTERFACE = "127.0.0.1";
+// const PORT = 8443;
+// const INTERFACE = "195.158.222.116";
+const PORT = 3000;
+const INTERFACE = "127.0.0.1";
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 // https сервер конфигурация

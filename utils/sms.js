@@ -24,8 +24,8 @@ function single(options) {
       {
         to: phone,
         text: message,
-        // test: isTest,
-        test: true,
+        test: isTest,
+//        test: true,
       },
       function (e) {
         // console.log(e);
