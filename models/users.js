@@ -10,4 +10,11 @@ async function fetchByLogin(login) {
   return data;
 }
 
-module.exports = { fetchByUid, fetchByLogin };
+async function fetchPasswordByUid(uid) {
+  const data = await dbQuery(
+    `SELECT password, CONVERT(DECODE(password, '${process.env.DB_SECRET}') USING utf8) as password FROM users WHERE uid = '${uid}'`
+  );
+  return data;
+}
+
+module.exports = { fetchByUid, fetchByLogin, fetchPasswordByUid };

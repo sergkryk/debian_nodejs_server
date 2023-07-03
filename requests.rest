@@ -7,9 +7,17 @@ GET http://127.0.0.1:3000/psb?QueryType=cancel&TransactionId=1111119&Transaction
 GET http://127.0.0.1:3000/paydayreport?CheckDateBegin=20230307190000&CheckDateEnd=20230316235959
 
 ###
-https://chernuhino.online:8443/psb?QueryType=check&TransactionId=185&TransactionDate=20230219130000&Account=1116&Amount=10.00
+https://chernuhino.online:443/psb?QueryType=check&TransactionId=185&TransactionDate=20230219130000&Account=1116&Amount=10.00
 ###
 https://chernuhino.online:8443/psb?QueryType=pay&TransactionId=185&TransactionDate=20230219130000&Account=1116&Amount=10.00
 ###
 https://chernuhino.online:8443/psb?QueryType=cancel&TransactionId=185&TransactionDate=20230219130000&Account=1116&Amount=10.00
 
+###
+POST http://127.0.0.1:3001/auth
+content-type: application/json
+
+{
+    "name": "sample",
+    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+}
