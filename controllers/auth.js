@@ -28,6 +28,8 @@ async function auth(req, res, next) {
     if (isValid) {
       const user = await fetchUser(req?.body?.login);
       res.json(user);
+    } else {
+      res.json([]);
     }
   } catch (error) {
     res.json([]);
