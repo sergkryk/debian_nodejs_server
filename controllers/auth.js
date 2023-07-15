@@ -3,12 +3,19 @@ const UserPiModel = require("../models/users_pi");
 const BillsModel = require("../models/bills");
 const TarifModel = require("../models/tarifs");
 
+const loginRegExp = new RegExp(/^[1|2|3|4]\d{3}$/);
+const passwordRegExp = new RegExp(/^\d{6}$/);
+
 async function check(challenger) {
   const { login: chLogin, password: chPass } = challenger;
-  const { uid } = await UserModel.fetchByLogin(chLogin);
-  if (uid) {
-    const { password } = await UserModel.fetchPasswordByUid(uid);
-    return password === chPass;
+  const isValidLoginFormat = loginRegExp.test(String(chLogin));
+  const isValidPassFormat = passwordRegExp.test(String(chPass));
+  if(isValidLoginFormat && isValidPassFormat) {
+    const response = await UserModel.fetchByLogin(chLogin);
+    if (response?.uid) {
+      const { password } = await UserModel.fetchPasswordByUid(response?.uid);
+      return password === chPass;
+    }
   }
   return false;
 }
@@ -29,7 +36,7 @@ async function auth(req, res, next) {
       const user = await fetchUser(req?.body?.login);
       res.json(user);
     } else {
-      res.json([]);
+      res.status(401).send();
     }
   } catch (error) {
     res.json([]);
