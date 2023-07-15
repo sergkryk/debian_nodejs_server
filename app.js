@@ -1,10 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
-const dotenv = require("dotenv");
+// const dotenv = require("dotenv");
 
 // загружаю переменные из файла .env
-dotenv.config();
+// dotenv.config();
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 // импорт для https сервера
