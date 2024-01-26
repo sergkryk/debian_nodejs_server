@@ -4,6 +4,7 @@ const errorHandler = require("../utils/errorHandler.js");
 const messages = require("../utils/sms");
 const messageTemplates = require("../utils/messageTemplates.js");
 const logToFile = require("../utils/log");
+const lanbillingAdmins = require("../config/lanbillingAdminsDict");
 
 // модели для работы с базой данных
 const User = require("../models/users.js");
@@ -74,6 +75,11 @@ class QueryController {
       ip: this.requestIp,
       aid: this.providerId,
       payType: this.methodId,
+      lanbilling: {
+        account: this.Account,
+        amount: this.Amount,
+        aid: lanbillingAdmins[this.providerId],
+      }
     });
     if (query.status === "success") {
       this.TransactionExt = query.paymentId;

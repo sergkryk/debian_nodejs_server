@@ -1,8 +1,9 @@
 const BillsModel = require("../models/bills");
 const PaymentsModel = require("../models/payments");
+const { payToLanbilling } = require("../modules/lanbilling");
 
 async function addTransaction(opt) {
-  const { aid, ip, uid, sum, payType = 0, transactionId = '', transactionDate = '' } = opt;
+  const { aid, ip, uid, sum, payType = 0, transactionId = '', transactionDate = '', lanbilling = {} } = opt;
   // записываю платёж в таблицу payments
   const paymentRecordRequest = await PaymentsModel.addPay(
     uid,
@@ -34,6 +35,10 @@ async function addTransaction(opt) {
   if (Number(deposit) !== Number(paymentRecord.sum) + Number(paymentRecord.last_deposit)) {
     throw new Error("Failed to update deposit!");
   }
+  // отправляю платёж в lanbilling
+  const comment = transactionId ? `Платёж с внешним идентификатором ${transactionId} от ${transactionDate}` : 'Оплата через дилера';
+  await payToLanbilling(lanbilling.account, lanbilling.amount, paymentRecordRequest.insertId, lanbilling.aid, comment);
+  // возвращаю ответ
   return {
     uid,
     sum,

@@ -6,6 +6,7 @@ const messages = require("../utils/sms");
 const messageTemplates = require("../utils/messageTemplates.js");
 const logToFile = require("../utils/log");
 const addTransaction = require("../modules/addTransaction");
+const lanbillingAdmins = require("../config/lanbillingAdminsDict");
 
 async function check(req, res, next) {
   if (!req.query.account) {
@@ -49,6 +50,11 @@ async function pay(req, res, next) {
       ip: req.query.requestIp,
       uid,
       sum,
+      lanbilling: {
+        account,
+        amount: sum,
+        aid: lanbillingAdmins[admin.aid],
+      }
     });
     if (billUpdateQuery.status === "success") {
       messages.single({
