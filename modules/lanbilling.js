@@ -107,6 +107,7 @@ async function payToLanbilling(account, amount, pid, aid, comment) {
     login: "admin",
     pass: "vv1315vv",
   });
+  console.log(Lanbill);
   const [ uid ] = await Lanbill.getAccounts(account);
   const { agrmid } = await Lanbill.getAgreements(uid);
   const response = await Lanbill.pay(agrmid, amount, pid, aid, comment);
