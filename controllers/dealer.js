@@ -69,7 +69,6 @@ async function pay(req, res, next) {
       });
     }
   } catch (error) {
-    console.log(error);
     logToFile(
       "errors.txt",
       `пользователь: user_${account}, сумма: ${sum} рублей, администратор: ${admin.name}, ошибка: ${error.message} \n`

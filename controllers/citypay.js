@@ -123,7 +123,6 @@ async function init(req, res) {
       `пользователь: user_${req.query.Account}, сумма: ${req.query.Amount} рублей, id администратора: ${req.query.providerId}, тип запроса: ${req.query.QueryType}, ошибка: ${JSON.stringify(error)}\n`
     );
     res.send(xmlResponse("error", { code: error.code }));
-    console.log(error.message);
   }
 }
 

@@ -36,9 +36,6 @@ class Lanbilling {
     };
     const response = await fetch(url, options);
     if (response.status === 200) {
-      for (let [key, value] of response.headers) {
-        console.log(`${key} = ${value}`);
-      }
       const cookie = response.headers.getSetCookie();
       return new Lanbilling(url, manager, cookie[0]);
     } else {
@@ -110,7 +107,6 @@ async function payToLanbilling(account, amount, pid, aid, comment) {
     login: "admin",
     pass: "vv1315vv",
   });
-  console.log(Lanbill);
   const [ uid ] = await Lanbill.getAccounts(account);
   const { agrmid } = await Lanbill.getAgreements(uid);
   const response = await Lanbill.pay(agrmid, amount, pid, aid, comment);
