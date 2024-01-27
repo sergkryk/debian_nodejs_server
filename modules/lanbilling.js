@@ -35,7 +35,7 @@ class Lanbilling {
       body: getAuthBody(manager.login, manager.pass),
     };
     const response = await fetch(url, options);
-    console.log(response);
+    console.log(response.headers);
     if (response.status === 200) {
       const cookie = response.headers.getSetCookie();
       return new Lanbilling(url, manager, cookie[0]);
