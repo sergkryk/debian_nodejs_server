@@ -37,7 +37,9 @@ class Lanbilling {
     const response = await fetch(url, options);
     console.log(response.headers);
     if (response.status === 200) {
-      const cookie = response.headers.getSetCookie();
+      console.log(response.get('set-cookie'));
+      const cookie = response.headers.get('set-cookie');
+      // const cookie = response.headers.getSetCookie();
       return new Lanbilling(url, manager, cookie[0]);
     } else {
       throw new Error("Initialization failed!");
