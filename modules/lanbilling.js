@@ -105,7 +105,7 @@ class Lanbilling {
 async function payToLanbilling(account, amount, pid, aid, comment) {
   const Lanbill = await Lanbilling.initialize("http://10.45.0.50:34012", {
     login: "admin",
-    pass: "vv1315vv",
+    pass: "vb30082016",
   });
   const [ uid ] = await Lanbill.getAccounts(account);
   const { agrmid } = await Lanbill.getAgreements(uid);
